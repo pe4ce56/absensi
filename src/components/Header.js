@@ -6,7 +6,7 @@ export default () => {
   return (
     <View
       style={tailwind(
-        'flex flex-row justify-between  items-center bg-gray-50 border-b-2 border-gray-100  p-4 w-full',
+        'flex flex-row justify-between  items-center bg-gray-50 border-b-2 border-gray-100  px-6 py-5 w-full',
       )}>
       <View>
         <Text style={tailwind('text-base font-semibold')}>
