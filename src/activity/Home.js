@@ -6,22 +6,35 @@ import Header from '../components/Header';
 const {tailwind} = create(styles);
 
 const Home = () => {
+  const [data, setData] = useState();
+  useEffect(() => {
+    fetch('https://absensi-app.herokuapp.com/api/login', {
+      method: 'POST',
+      data: JSON.stringify({username: 'admin', password: 'admin'}),
+    })
+      .then(res => {
+        console.log(res);
+        return res.json();
+      })
+      .then(res => console.log(res))
+      .catch(e => console.log(e));
+  }, []);
   return (
     <React.Fragment>
       <Header />
       <ScrollView style={tailwind('p-4 bg-gray-100 h-full')}>
-        <Text style={tailwind('text-3xl text-gray-600')}>Absensi hari ini</Text>
+        <Text style={tailwind('text-2xl text-gray-600')}>Absensi hari ini</Text>
         <TouchableHighlight>
           <View
             style={tailwind(
-              'flex flex-row justify-between items-center border-l-5 border-ijo  rounded-xl bg-white mt-4 px-5  py-3  ',
+              'flex flex-row justify-between items-center border-l-5 border-ijo  rounded-lg bg-white mt-4 px-4 py-3 shadow-lg ',
             )}>
             <View>
-              <Text style={tailwind('text-base text-gray-500')}>
+              <Text style={tailwind('text-tiny text-gray-500')}>
                 Pendidikan Agama Islam
               </Text>
-              <Text style={tailwind('text-sm text-gray-400')}>
-                Supardi, S.pd{' '}
+              <Text style={tailwind('text-xs text-gray-400')}>
+                Supardi, S.pd
               </Text>
             </View>
             <View>
@@ -32,18 +45,18 @@ const Home = () => {
         <TouchableHighlight>
           <View
             style={tailwind(
-              'flex flex-row justify-between items-center border-l-5 border-red-400 rounded-xl bg-white mt-4 px-4  py-3  ',
+              'flex flex-row justify-between items-center border-l-5 border-abang rounded-lg bg-white mt-4 px-4  py-3  ',
             )}>
             <View>
-              <Text style={tailwind('text-base text-gray-500')}>
+              <Text style={tailwind('text-tiny text-gray-500')}>
                 Pendidikan Agama Islam
               </Text>
-              <Text style={tailwind('text-sm text-gray-400')}>
-                Supardi, S.pd{' '}
+              <Text style={tailwind('text-xs text-gray-400')}>
+                Supardi, S.pd
               </Text>
             </View>
             <View>
-              <Text>07.00</Text>
+              <Text style={tailwind('text-xs')}>07.00</Text>
             </View>
           </View>
         </TouchableHighlight>
@@ -51,14 +64,14 @@ const Home = () => {
         <TouchableHighlight>
           <View
             style={tailwind(
-              'flex flex-row justify-between items-center border-l-5 border-blue-400 rounded-xl bg-white mt-4 px-4 py-3  ',
+              'flex flex-row justify-between items-center border-l-5 border-biru rounded-lg bg-white mt-4 px-4 py-3 ',
             )}>
             <View>
-              <Text style={tailwind('text-base text-gray-500')}>
+              <Text style={tailwind('text-tiny text-gray-500')}>
                 Pendidikan Agama Islam
               </Text>
-              <Text style={tailwind('text-sm text-gray-400')}>
-                Supardi, S.pd{' '}
+              <Text style={tailwind('text-xs text-gray-400')}>
+                Supardi, S.pd
               </Text>
             </View>
             <View>
@@ -70,14 +83,14 @@ const Home = () => {
           <TouchableHighlight>
             <View
               style={tailwind(
-                'flex flex-row justify-between items-center border-l-5 border-gray-400 rounded-xl bg-white mt-4 px-4 py-3 ',
+                'flex flex-row justify-between items-center border-l-5 border-gray-300 rounded-lg bg-white mt-4 px-4 py-3 ',
               )}>
               <View>
-                <Text style={tailwind('text-base text-gray-500')}>
+                <Text style={tailwind('text-tiny text-gray-500')}>
                   Pendidikan Agama Islam
                 </Text>
                 <Text style={tailwind('text-sm text-gray-400')}>
-                  Supardi, S.pd{' '}
+                  Supardi, S.pd
                 </Text>
               </View>
               <View>

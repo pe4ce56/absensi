@@ -17,6 +17,11 @@ module.exports = {
       },
       colors: {
         ijo: '#87E485',
+        biru: '#89BBFE',
+        abang: '#F85F5F',
+      },
+      fontSize: {
+        tiny: '.975rem',
       },
     },
   },

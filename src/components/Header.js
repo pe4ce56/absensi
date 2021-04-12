@@ -12,7 +12,7 @@ export default () => {
         <Text style={tailwind('text-base font-semibold')}>
           XII Rekayasa Perangkat Lunak 1
         </Text>
-        <Text style={tailwind('text-sm text-blue-500')}>10/05/2002</Text>
+        <Text style={tailwind('text-sm text-blue-900')}>10/05/2002</Text>
       </View>
       <View>
         <Image
