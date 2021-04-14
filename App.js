@@ -17,6 +17,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 import styles from './styles.json';
 import {create, getColor} from 'tailwind-rn';
+import Maps from './src/components/Maps';
 const {tailwind} = create(styles);
 const App = () => {
   return (
@@ -44,7 +45,8 @@ const App = () => {
         }}
         initialRouteName="Home">
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Jadwal" component={Home} />
+        <Tab.Screen name="Jadwal" component={Maps} />
+        <Tab.Screen name="Absen" component={Maps} />
       </Tab.Navigator>
     </NavigationContainer>
   );

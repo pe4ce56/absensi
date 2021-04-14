@@ -27,7 +27,7 @@ const Home = () => {
         <TouchableHighlight>
           <View
             style={tailwind(
-              'flex flex-row justify-between items-center border-l-5 border-ijo  rounded-lg bg-white mt-4 px-4 py-3 shadow-lg ',
+              'flex flex-row justify-between items-center border-l-5 border-ijo  rounded-lg bg-white mt-4 px-4 py-3 ',
             )}>
             <View>
               <Text style={tailwind('text-tiny text-gray-500')}>
@@ -79,8 +79,8 @@ const Home = () => {
             </View>
           </View>
         </TouchableHighlight>
-        {[1, 2, 3, 4, 5, 6].map(() => (
-          <TouchableHighlight>
+        {[1, 2, 3, 4, 5, 6].map((data, key) => (
+          <TouchableHighlight key={key}>
             <View
               style={tailwind(
                 'flex flex-row justify-between items-center border-l-5 border-gray-300 rounded-lg bg-white mt-4 px-4 py-3 ',
