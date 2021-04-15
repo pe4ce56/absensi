@@ -1,5 +1,6 @@
-import {useEffect, useState} from 'react/cjs/react.development';
 import React from 'react';
+import {useEffect, useState, useCallback} from 'react/cjs/react.development';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   Dimensions,
   StyleSheet,
@@ -14,7 +15,27 @@ import Geolocation from 'react-native-geolocation-service';
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
 const {tailwind} = create(styles);
-export default () => {
+const Maps = ({navigation: {dangerouslyGetParent}}) => {
+  // to delete bottom bar
+  useFocusEffect(
+    useCallback(() => {
+      const parent = dangerouslyGetParent();
+      if (parent) {
+        parent.setOptions({
+          tabBarVisible: false,
+        });
+      }
+
+      return () => {
+        if (parent) {
+          parent.setOptions({
+            tabBarVisible: true,
+          });
+        }
+      };
+    }, [dangerouslyGetParent]),
+  );
+
   const [loading, setLoading] = useState(true);
   const [paddingTop, setPaddingTop] = useState(1);
 
@@ -96,3 +117,5 @@ const style = StyleSheet.create({
     height: height / 1.42,
   },
 });
+
+export default Maps;

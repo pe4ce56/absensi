@@ -10,15 +10,18 @@ module.exports = {
         3: '3px',
         4: '4px',
         5: '5px',
+        6: '6px',
         8: '8px',
       },
       height: {
         18: '4.5rem',
       },
       colors: {
-        ijo: '#87E485',
-        biru: '#89BBFE',
-        abang: '#F85F5F',
+        ijo: '#00B389',
+        biru: '#00A1E9',
+        abang: '#F0725E',
+        abu: '#C4C4C4',
+        ireng: '#3A4856',
       },
       fontSize: {
         tiny: '.975rem',

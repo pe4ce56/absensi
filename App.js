@@ -7,19 +7,12 @@
  */
 
 import React from 'react';
+import {Alert, BackHandler, PermissionsAndroid} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-import Home from './src/activity/Home';
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
 import styles from './styles.json';
 import {create, getColor} from 'tailwind-rn';
-import Maps from './src/activity/Maps';
 import {useEffect} from 'react/cjs/react.development';
-import {Alert, BackHandler, PermissionsAndroid} from 'react-native';
-import Footer from './src/components/Footer';
+import Navigation from './Navigation';
 const {tailwind} = create(styles);
 
 const App = () => {
@@ -57,15 +50,7 @@ const App = () => {
   });
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen name="Jadwal" component={Maps} />
-        <Stack.Screen name="Absen" component={Maps} />
-      </Stack.Navigator>
+      <Navigation />
     </NavigationContainer>
   );
 };

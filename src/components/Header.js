@@ -16,7 +16,7 @@ export default () => {
       </View>
       <View>
         <Image
-          style={tailwind('h-8 w-8 rounded-full ')}
+          style={tailwind('h-10 w-10 rounded-full ')}
           source={{
             uri:
               'https://icons-for-free.com/iconfiles/png/512/avatar+person+profile+user+icon-1320086059654790795.png',
