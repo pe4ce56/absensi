@@ -1,19 +1,16 @@
 import React from 'react';
 import {
-  Button,
   Dimensions,
   PermissionsAndroid,
   Alert,
-  ScrollView,
   StyleSheet,
   Text,
-  Touchable,
   TouchableHighlight,
-  TouchableHighlightBase,
   View,
+  ToastAndroid,
 } from 'react-native';
 import MapView, {Geojson, PROVIDER_GOOGLE} from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import {useEffect, useState} from 'react/cjs/react.development';
 
 import styles from '../../styles.json';
@@ -30,6 +27,13 @@ export default () => {
     longitude: 0,
   });
   useEffect(() => {
+    ToastAndroid.showWithGravityAndOffset(
+      'Sedang Mengambil lokasi',
+      ToastAndroid.SHORT,
+      ToastAndroid.TOP,
+      25,
+      50,
+    );
     Geolocation.getCurrentPosition(
       position => {
         setCoord({
@@ -38,11 +42,15 @@ export default () => {
           longitudeDelta: 0.005,
           latitudeDelta: 0.005,
         });
-        console.log(position);
         setLoading(false);
       },
-      error => Alert.alert('Error', JSON.stringify(error)),
-      {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000},
+      error => {},
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000,
+        forceRequestLocation: true,
+      },
     );
   }, []);
   return (
@@ -52,6 +60,7 @@ export default () => {
           <MapView
             style={style.mapContainer}
             initialRegion={coord}
+            userLocationPriority="balanced"
             followUserLocation={true}
             showsUserLocation={true}
             showsMyLocationButton={true}
@@ -63,7 +72,7 @@ export default () => {
                 longitude: coord.longitude,
               }}
               title={'Lokasi kamu saat ini'}
-              draggable
+              draggable={false}
             />
           </MapView>
 

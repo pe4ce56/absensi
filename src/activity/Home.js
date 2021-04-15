@@ -5,29 +5,18 @@ import {create} from 'tailwind-rn';
 import Header from '../components/Header';
 const {tailwind} = create(styles);
 
-const Home = () => {
-  const [data, setData] = useState();
-  useEffect(() => {
-    fetch('https://absensi-app.herokuapp.com/api/login', {
-      method: 'POST',
-      data: JSON.stringify({username: 'admin', password: 'admin'}),
-    })
-      .then(res => {
-        console.log(res);
-        return res.json();
-      })
-      .then(res => console.log(res))
-      .catch(e => console.log(e));
-  }, []);
+const Home = ({navigation}) => {
   return (
     <React.Fragment>
       <Header />
       <ScrollView style={tailwind('p-4 bg-gray-100 h-full')}>
         <Text style={tailwind('text-2xl text-gray-600')}>Absensi hari ini</Text>
-        <TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => navigation.navigate('Absen')}
+          style={tailwind('mt-4 rounded-lg')}>
           <View
             style={tailwind(
-              'flex flex-row justify-between items-center border-l-5 border-ijo  rounded-lg bg-white mt-4 px-4 py-3 ',
+              'flex flex-row justify-between items-center border-l-5 border-ijo  rounded-lg bg-white px-4 py-3 ',
             )}>
             <View>
               <Text style={tailwind('text-tiny text-gray-500')}>
