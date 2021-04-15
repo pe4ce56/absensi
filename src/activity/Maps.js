@@ -2,8 +2,6 @@ import {useEffect, useState} from 'react/cjs/react.development';
 import React from 'react';
 import {
   Dimensions,
-  PermissionsAndroid,
-  Alert,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -31,7 +29,7 @@ export default () => {
       'Sedang Mengambil lokasi',
       ToastAndroid.SHORT,
       ToastAndroid.TOP,
-      25,
+      30,
       50,
     );
     Geolocation.getCurrentPosition(
@@ -42,7 +40,6 @@ export default () => {
           longitudeDelta: 0.005,
           latitudeDelta: 0.005,
         });
-        console.log(position);
         setLoading(false);
       },
       error => {},
@@ -96,6 +93,6 @@ let {width, height} = Dimensions.get('window');
 const style = StyleSheet.create({
   mapContainer: {
     justifyContent: 'center',
-    height: height / 1.3,
+    height: height / 1.42,
   },
 });

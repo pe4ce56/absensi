@@ -10,24 +10,17 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import Home from './src/activity/Home';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 import styles from './styles.json';
 import {create, getColor} from 'tailwind-rn';
-import Maps from './src/components/Maps';
+import Maps from './src/activity/Maps';
 import {useEffect} from 'react/cjs/react.development';
-import {Alert, PermissionsAndroid} from 'react-native';
+import {Alert, BackHandler, PermissionsAndroid} from 'react-native';
+import Footer from './src/components/Footer';
 const {tailwind} = create(styles);
-function MapsStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Maps" component={MapS} />
-    </Stack.Navigator>
-  );
-}
 
 const App = () => {
   useEffect(async () => {
@@ -38,10 +31,23 @@ const App = () => {
 
     try {
       PermissionsAndroid.requestMultiple(permissions).then(granted => {
-        if (!granted) {
+        if (
+          granted['android.permission.ACCESS_FINE_LOCATION'] !==
+            PermissionsAndroid.RESULTS.GRANTED ||
+          granted['android.permission.ACCESS_COARSE_LOCATION'] !==
+            PermissionsAndroid.RESULTS.GRANTED
+        ) {
           Alert.alert(
             'Akses lokasi ditolak',
             'Anda tidak dapat menggunakan aplikasi ini',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  BackHandler.exitApp();
+                },
+              },
+            ],
           );
         }
       });
@@ -51,32 +57,15 @@ const App = () => {
   });
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused ? 'clipboard' : 'clipboard-outline';
-            } else if (route.name === 'Jadwal') {
-              iconName = focused ? 'time' : 'time-outline';
-            }
-
-            // You can return any component that you like here!
-            return <Icon name={iconName} size={size} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          showLabel: true,
-          activeTintColor: getColor('blue-300'),
-          inactiveTintColor: 'gray',
-          style: tailwind('h-16 py-3'),
-        }}
-        initialRouteName="Home">
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Jadwal" component={Maps} />
-        <Stack.Screen name="Absen" component={MapsStack} />
-      </Tab.Navigator>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen name="Jadwal" component={Maps} />
+        <Stack.Screen name="Absen" component={Maps} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };

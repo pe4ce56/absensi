@@ -3,6 +3,7 @@ import {View, Text, TouchableHighlight, ScrollView} from 'react-native';
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 const {tailwind} = create(styles);
 
 const Home = ({navigation}) => {
@@ -89,6 +90,7 @@ const Home = ({navigation}) => {
           </TouchableHighlight>
         ))}
       </ScrollView>
+      <Footer />
     </React.Fragment>
   );
 };
