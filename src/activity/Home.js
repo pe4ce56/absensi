@@ -14,12 +14,13 @@ const {tailwind} = create(styles);
 
 const Home = ({navigation}) => {
   return (
-    <React.Fragment>
+    <View style={tailwind('bg-white flex-1 ')}>
       <Header />
-      <ScrollView style={tailwind('bg-white h-full px-4')}>
-        <Text style={tailwind('text-2xl text-gray-600 my-2 mt-4')}>
-          Absensi hari ini
-        </Text>
+      <Text style={tailwind('text-2xl text-gray-600 my-4 px-4')}>
+        Absensi hari ini
+      </Text>
+      <ScrollView
+        style={{...tailwind('bg-white h-full px-4'), marginBottom: 87}}>
         <View style={tailwind('mt-2 overflow-hidden  pb-2')}>
           <TouchableHighlight
             onPress={() => navigation.navigate('Absensi')}
@@ -128,7 +129,7 @@ const Home = ({navigation}) => {
           </View>
         ))}
       </ScrollView>
-    </React.Fragment>
+    </View>
   );
 };
 

@@ -9,6 +9,7 @@ const {tailwind, getColor} = create(styles);
 
 import Home from './src/activity/Home';
 import Maps from './src/activity/Maps';
+import Jadwal from './src/activity/Jadwal';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -76,7 +77,7 @@ const Navigation = () => {
 
       <Tab.Screen
         name="Jadwal"
-        component={Maps}
+        component={Jadwal}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center')}>
