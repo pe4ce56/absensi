@@ -19,8 +19,16 @@ import styles from './styles.json';
 import {create, getColor} from 'tailwind-rn';
 import Maps from './src/components/Maps';
 import {useEffect} from 'react/cjs/react.development';
-import {PermissionsAndroid} from 'react-native';
+import {Alert, PermissionsAndroid} from 'react-native';
 const {tailwind} = create(styles);
+function MapsStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Maps" component={MapS} />
+    </Stack.Navigator>
+  );
+}
+
 const App = () => {
   useEffect(async () => {
     var permissions = [
@@ -30,7 +38,12 @@ const App = () => {
 
     try {
       PermissionsAndroid.requestMultiple(permissions).then(granted => {
-        console.log(granted);
+        if (!granted) {
+          Alert.alert(
+            'Akses lokasi ditolak',
+            'Anda tidak dapat menggunakan aplikasi ini',
+          );
+        }
       });
     } catch (err) {
       console.warn(err);
@@ -62,7 +75,7 @@ const App = () => {
         initialRouteName="Home">
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Jadwal" component={Maps} />
-        <Stack.Screen name="Absen" component={Maps} />
+        <Stack.Screen name="Absen" component={MapsStack} />
       </Tab.Navigator>
     </NavigationContainer>
   );
