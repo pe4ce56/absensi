@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react/cjs/react.development';
 import React from 'react';
 import {
   Dimensions,
@@ -11,7 +12,6 @@ import {
 } from 'react-native';
 import MapView, {Geojson, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
-import {useEffect, useState} from 'react/cjs/react.development';
 
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
@@ -42,6 +42,7 @@ export default () => {
           longitudeDelta: 0.005,
           latitudeDelta: 0.005,
         });
+        console.log(position);
         setLoading(false);
       },
       error => {},
@@ -55,7 +56,7 @@ export default () => {
   }, []);
   return (
     <React.Fragment>
-      {!loading ? (
+      {!loading && (
         <View style={{paddingTop: paddingTop}}>
           <MapView
             style={style.mapContainer}
@@ -76,21 +77,17 @@ export default () => {
             />
           </MapView>
 
-          <View
-            style={tailwind(
-              'absolute opacity-80 bottom-32 items-center w-full',
-            )}>
+          <View style={tailwind(' items-center w-full h-full bg-white')}>
+            <View></View>
             <TouchableHighlight
               onPress={() => {}}
               style={tailwind(
-                'mt-6 bg-white  w-1/2 px-5 py-3 rounded-full items-center',
+                'mt-6 bg-blue-500   w-3/4 px-5 py-3 rounded items-center',
               )}>
-              <Text style={{color: 'black'}}>Absen</Text>
+              <Text style={tailwind('text-white font-bold')}>Absen</Text>
             </TouchableHighlight>
           </View>
         </View>
-      ) : (
-        <Text>loading</Text>
       )}
     </React.Fragment>
   );
@@ -99,6 +96,6 @@ let {width, height} = Dimensions.get('window');
 const style = StyleSheet.create({
   mapContainer: {
     justifyContent: 'center',
-    height: height,
+    height: height / 1.3,
   },
 });
