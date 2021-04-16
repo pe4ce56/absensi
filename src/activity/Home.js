@@ -69,7 +69,7 @@ const Home = ({navigation}) => {
       <View
         style={{
           width: width,
-          backgroundColor: getColor('gray-100'),
+          backgroundColor: getColor('gray-50'),
           borderTopRightRadius: 40,
           flex: 1,
           position: 'absolute',
@@ -85,7 +85,7 @@ const Home = ({navigation}) => {
             marginBottom: 90,
           }}>
           {absen.map((data, key) => (
-            <View style={tailwind('overflow-hidden  pb-2 mt-2')}>
+            <View style={tailwind('overflow-hidden  pb-2 mt-2')} key={key}>
               <TouchableHighlight
                 underlayColor={getBackground(data.status)}
                 onPress={() => navigation.navigate('Absensi')}

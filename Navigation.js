@@ -10,6 +10,10 @@ const {tailwind, getColor} = create(styles);
 import Home from './src/activity/Home';
 import Maps from './src/activity/Maps';
 import Jadwal from './src/activity/Jadwal';
+import Profile from './src/activity/Profile';
+import Authentication from './src/activity/Authentication';
+import ChangePassword from './src/activity/ChangePassword';
+import {getFocusedRouteNameFromRoute} from '@react-navigation/core';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -30,6 +34,35 @@ const HomeScreen = () => {
         })}
       />
     </HomeStack.Navigator>
+  );
+};
+const ProfileStack = createStackNavigator();
+
+const ProfilScreen = () => {
+  const getBar = route => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
+
+    if (routeName === 'Ubah Password') {
+      return false;
+    }
+
+    return true;
+  };
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
+        name="Profil"
+        component={Profile}
+        options={{headerShown: false}}
+      />
+      <ProfileStack.Screen
+        name="Verifikasi Password"
+        component={Authentication}
+      />
+      <ProfileStack.Screen name="Ubah Password" component={ChangePassword} />
+    </ProfileStack.Navigator>
   );
 };
 
@@ -97,7 +130,7 @@ const Navigation = () => {
       />
       <Tab.Screen
         name="Profil"
-        component={Maps}
+        component={ProfilScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center')}>

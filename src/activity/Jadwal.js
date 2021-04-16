@@ -65,7 +65,7 @@ const Jadwal = () => {
       <View
         style={{
           width: width,
-          backgroundColor: getColor('gray-100'),
+          backgroundColor: getColor('gray-50'),
           borderTopRightRadius: 40,
           flex: 1,
           position: 'absolute',
@@ -82,7 +82,7 @@ const Jadwal = () => {
           }}>
           {days.map((day, key) => (
             // hidden the shadow top left
-            <View style={tailwind('mt-2 overflow-hidden  pb-2')}>
+            <View style={tailwind('mt-2 overflow-hidden  pb-2')} key={key}>
               <TouchableHighlight
                 activeOpacity={0.8}
                 underlayColor={getColor('biru')}
@@ -108,7 +108,9 @@ const Jadwal = () => {
                       }}>
                       <View>
                         <Text
-                          style={tailwind('text-xl text-gray-600 capitalize')}>
+                          style={tailwind(
+                            'text-base text-gray-600 capitalize',
+                          )}>
                           {day}
                         </Text>
                       </View>
