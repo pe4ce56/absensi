@@ -45,7 +45,7 @@ const Navigation = () => {
           left: 0,
           right: 0,
           elevation: 0,
-          backgroundColor: '#414865',
+          backgroundColor: 'white',
           height: 60,
         },
       }}>
@@ -58,13 +58,13 @@ const Navigation = () => {
               <Icon
                 name="clipboard-outline"
                 size={25}
-                color={focused ? getColor('biru') : getColor('abu')}
+                color={focused ? getColor('biru') : getColor('gray-600')}
               />
               <Text
                 style={{
                   fontSize: 13,
                   fontWeight: '600',
-                  color: focused ? getColor('biru') : getColor('abu'),
+                  color: focused ? getColor('biru') : getColor('gray-600'),
                 }}>
                 Absensi
               </Text>
@@ -82,12 +82,12 @@ const Navigation = () => {
               <Icon
                 name="time-outline"
                 size={25}
-                color={focused ? getColor('biru') : getColor('abu')}
+                color={focused ? getColor('biru') : getColor('gray-600')}
               />
               <Text
                 style={{
                   fontSize: 13,
-                  color: focused ? getColor('biru') : getColor('abu'),
+                  color: focused ? getColor('biru') : getColor('gray-600'),
                 }}>
                 Jadwal
               </Text>
@@ -104,12 +104,12 @@ const Navigation = () => {
               <Icon
                 name="person-outline"
                 size={25}
-                color={focused ? getColor('biru') : getColor('abu')}
+                color={focused ? getColor('biru') : getColor('gray-600')}
               />
               <Text
                 style={{
                   fontSize: 13,
-                  color: focused ? getColor('biru') : getColor('abu'),
+                  color: focused ? getColor('biru') : getColor('gray-600'),
                 }}>
                 Profil
               </Text>

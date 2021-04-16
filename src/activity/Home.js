@@ -65,63 +65,62 @@ const Home = ({navigation}) => {
   };
   return (
     <View style={{alignItems: 'center'}}>
-      <Header>
-        <View
+      <Header />
+      <View
+        style={{
+          width: width,
+          backgroundColor: getColor('gray-100'),
+          borderTopRightRadius: 40,
+          flex: 1,
+          position: 'absolute',
+          top: 100,
+          height: height - 100,
+        }}>
+        <Text style={tailwind('text-2xl text-gray-700 my-4 px-4')}>
+          Absensi hari ini
+        </Text>
+        <ScrollView
           style={{
-            width: width,
-            backgroundColor: getColor('gray-100'),
-            borderTopRightRadius: 40,
-            flex: 1,
-            position: 'absolute',
-            top: 100,
-            height: height - 100,
+            ...tailwind('h-full px-4 '),
+            marginBottom: 90,
           }}>
-          <Text style={tailwind('text-2xl text-gray-700 my-4 px-4')}>
-            Absensi hari ini
-          </Text>
-          <ScrollView
-            style={{
-              ...tailwind('h-full px-4 '),
-              marginBottom: 90,
-            }}>
-            {absen.map((data, key) => (
-              <View style={tailwind('overflow-hidden  pb-2 mt-2')}>
-                <TouchableHighlight
-                  underlayColor={getBackground(data.status)}
-                  onPress={() => navigation.navigate('Absensi')}
-                  activeOpacity={0.9}
+          {absen.map((data, key) => (
+            <View style={tailwind('overflow-hidden  pb-2 mt-2')}>
+              <TouchableHighlight
+                underlayColor={getBackground(data.status)}
+                onPress={() => navigation.navigate('Absensi')}
+                activeOpacity={0.9}
+                style={{
+                  ...tailwind('rounded-lg '),
+                  backgroundColor: getBackground(data.status),
+                  paddingLeft: 5,
+                }}>
+                <View
                   style={{
-                    ...tailwind('rounded-lg '),
-                    backgroundColor: getBackground(data.status),
-                    paddingLeft: 5,
+                    ...tailwind(
+                      'flex flex-row justify-between items-center rounded-lg px-4 py-3 bg-white',
+                    ),
+                    elevation: 2,
                   }}>
-                  <View
-                    style={{
-                      ...tailwind(
-                        'flex flex-row justify-between items-center rounded-lg px-4 py-3 bg-white',
-                      ),
-                      elevation: 2,
-                    }}>
-                    <View>
-                      <Text style={tailwind('text-tiny text-gray-500')}>
-                        {data.mapel}
-                      </Text>
-                      <Text style={tailwind('text-xs text-gray-400')}>
-                        {data.guru}
-                      </Text>
-                    </View>
-                    <View>
-                      <Text style={tailwind('text-xs text-gray-700')}>
-                        {data.waktu}
-                      </Text>
-                    </View>
+                  <View>
+                    <Text style={tailwind('text-tiny text-gray-500')}>
+                      {data.mapel}
+                    </Text>
+                    <Text style={tailwind('text-xs text-gray-400')}>
+                      {data.guru}
+                    </Text>
                   </View>
-                </TouchableHighlight>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-      </Header>
+                  <View>
+                    <Text style={tailwind('text-xs text-gray-700')}>
+                      {data.waktu}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableHighlight>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
     </View>
   );
 };

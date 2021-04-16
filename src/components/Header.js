@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, Text, View} from 'react-native';
 import tailwind from 'tailwind-rn';
 
-export default ({children}) => {
+export default () => {
   return (
     <View
       style={{
@@ -34,7 +34,6 @@ export default ({children}) => {
           }}
         />
       </View>
-      {children}
     </View>
   );
 };
