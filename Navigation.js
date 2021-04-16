@@ -40,15 +40,13 @@ const Navigation = () => {
       tabBarOptions={{
         showLabel: false,
         style: {
-          borderTopColor: getColor('gray-100'),
-          borderTopWidth: 1,
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
           elevation: 0,
-          backgroundColor: '#fff',
-          height: 85,
+          backgroundColor: '#414865',
+          height: 60,
         },
       }}>
       <Tab.Screen
@@ -60,13 +58,13 @@ const Navigation = () => {
               <Icon
                 name="clipboard-outline"
                 size={25}
-                color={focused ? getColor('biru') : getColor('ireng')}
+                color={focused ? getColor('biru') : getColor('abu')}
               />
               <Text
                 style={{
                   fontSize: 13,
                   fontWeight: '600',
-                  color: focused ? getColor('biru') : getColor('ireng'),
+                  color: focused ? getColor('biru') : getColor('abu'),
                 }}>
                 Absensi
               </Text>
@@ -84,12 +82,12 @@ const Navigation = () => {
               <Icon
                 name="time-outline"
                 size={25}
-                color={focused ? getColor('biru') : getColor('ireng')}
+                color={focused ? getColor('biru') : getColor('abu')}
               />
               <Text
                 style={{
                   fontSize: 13,
-                  color: focused ? getColor('biru') : getColor('ireng'),
+                  color: focused ? getColor('biru') : getColor('abu'),
                 }}>
                 Jadwal
               </Text>
@@ -106,12 +104,12 @@ const Navigation = () => {
               <Icon
                 name="person-outline"
                 size={25}
-                color={focused ? getColor('biru') : getColor('ireng')}
+                color={focused ? getColor('biru') : getColor('abu')}
               />
               <Text
                 style={{
                   fontSize: 13,
-                  color: focused ? getColor('biru') : getColor('ireng'),
+                  color: focused ? getColor('biru') : getColor('abu'),
                 }}>
                 Profil
               </Text>

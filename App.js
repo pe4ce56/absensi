@@ -7,14 +7,15 @@
  */
 
 import React from 'react';
-import {Alert, BackHandler, PermissionsAndroid} from 'react-native';
+import {Text, Alert, BackHandler, PermissionsAndroid} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import styles from './styles.json';
 import {create, getColor} from 'tailwind-rn';
 import {useEffect} from 'react/cjs/react.development';
 import Navigation from './Navigation';
 const {tailwind} = create(styles);
-
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.style = {fontFamily: 'Helvetica'};
 const App = () => {
   useEffect(async () => {
     var permissions = [
