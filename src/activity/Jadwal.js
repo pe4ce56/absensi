@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   ScrollView,
   Text,
   View,
   TouchableHighlight,
   StyleSheet,
+  Animated,
   Dimensions,
+  LayoutAnimation,
+  NativeModules,
 } from 'react-native';
 import {create} from 'tailwind-rn';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,6 +17,10 @@ import Header from '../components/Header';
 
 import styles from '../../styles.json';
 
+const {UIManager} = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 const {tailwind, getColor} = create(styles);
 const {width, height} = Dimensions.get('window');
 const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat'];
@@ -28,11 +35,13 @@ const Jadwal = () => {
 
   //   to handle toggle on click
   const handleToggle = day => {
+    LayoutAnimation.easeInEaseOut();
     //   set all toggle to false
     let toggleFalse = Object.assign(
-      ...Object.keys(toggleJadwal).map(k => ({[k]: false})),
+      ...Object.keys(toggleJadwal).map(k => {
+        return {[k]: false};
+      }),
     );
-
     setToggleJadwal({...toggleFalse, [day]: toggleJadwal[day] ? false : true});
   };
 
