@@ -15,6 +15,7 @@ import Header from '../components/Header';
 
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('window');
+console.log(height);
 
 const Home = ({navigation}) => {
   const [absen, setAbsen] = useState([
@@ -64,7 +65,7 @@ const Home = ({navigation}) => {
     }
   };
   return (
-    <View style={{alignItems: 'center'}}>
+    <View style={{alignItems: 'center', flex: 1}}>
       <Header />
       <View
         style={{
@@ -74,52 +75,56 @@ const Home = ({navigation}) => {
           flex: 1,
           position: 'absolute',
           top: 100,
-          height: height - 100,
+          height: '100%',
         }}>
         <Text style={tailwind('text-2xl text-gray-700 my-4 px-4')}>
           Absensi hari ini
         </Text>
-        <ScrollView
+        <View
           style={{
-            ...tailwind('h-full px-4 '),
-            marginBottom: 90,
+            height: height - 220,
+            paddingHorizontal: 16,
           }}>
-          {absen.map((data, key) => (
-            <View style={tailwind('overflow-hidden  pb-2 mt-2')} key={key}>
-              <TouchableHighlight
-                underlayColor={getBackground(data.status)}
-                onPress={() => navigation.navigate('Absensi')}
-                activeOpacity={0.9}
-                style={{
-                  ...tailwind('rounded-lg '),
-                  backgroundColor: getBackground(data.status),
-                  paddingLeft: 5,
-                }}>
-                <View
-                  style={{
-                    ...tailwind(
-                      'flex flex-row justify-between items-center rounded-lg px-4 py-3 bg-white',
-                    ),
-                    elevation: 2,
-                  }}>
-                  <View>
-                    <Text style={tailwind('text-tiny text-gray-500')}>
-                      {data.mapel}
-                    </Text>
-                    <Text style={tailwind('text-xs text-gray-400')}>
-                      {data.guru}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={tailwind('text-xs text-gray-700')}>
-                      {data.waktu}
-                    </Text>
-                  </View>
+          <ScrollView>
+            <View style={{paddingBottom: 40}}>
+              {absen.map((data, key) => (
+                <View style={tailwind('overflow-hidden  pb-2 mt-2')} key={key}>
+                  <TouchableHighlight
+                    underlayColor={getBackground(data.status)}
+                    onPress={() => navigation.navigate('Absensi')}
+                    activeOpacity={0.9}
+                    style={{
+                      ...tailwind('rounded-lg '),
+                      backgroundColor: getBackground(data.status),
+                      paddingLeft: 5,
+                    }}>
+                    <View
+                      style={{
+                        ...tailwind(
+                          'flex flex-row justify-between items-center rounded-lg px-4 py-3 bg-white',
+                        ),
+                        elevation: 2,
+                      }}>
+                      <View>
+                        <Text style={tailwind('text-tiny text-gray-500')}>
+                          {data.mapel}
+                        </Text>
+                        <Text style={tailwind('text-xs text-gray-400')}>
+                          {data.guru}
+                        </Text>
+                      </View>
+                      <View>
+                        <Text style={tailwind('text-xs text-gray-700')}>
+                          {data.waktu}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableHighlight>
                 </View>
-              </TouchableHighlight>
+              ))}
             </View>
-          ))}
-        </ScrollView>
+          </ScrollView>
+        </View>
       </View>
     </View>
   );

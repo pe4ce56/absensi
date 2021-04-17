@@ -75,63 +75,67 @@ const Jadwal = () => {
         <Text style={tailwind('text-2xl text-gray-600 my-4  px-4')}>
           Jadwal Pelajaran
         </Text>
-        <ScrollView
+        <View
           style={{
-            ...tailwind('h-full px-4'),
-            marginBottom: 86,
+            height: height - 220,
+            paddingHorizontal: 16,
           }}>
-          {days.map((day, key) => (
-            // hidden the shadow top left
-            <View style={tailwind('mt-2 overflow-hidden  pb-2')} key={key}>
-              <TouchableHighlight
-                activeOpacity={0.8}
-                underlayColor={getColor('biru')}
-                style={tailwind('rounded-lg ')}
-                onPress={() => handleToggle(day)}
-                style={{
-                  ...tailwind('rounded-lg '),
-                  backgroundColor: getColor('biru'),
-                  paddingLeft: 5,
-                }}>
-                {/* Container */}
-                <View
-                  style={{
-                    ...tailwind(' rounded-lg bg-white px-2'),
-                    ...style.shadow,
-                  }}>
-                  <View style={tailwind(' px-2 py-3  border-gray-100')}>
+          <ScrollView>
+            <View style={{paddingBottom: 40}}>
+              {days.map((day, key) => (
+                // hidden the shadow top left
+                <View style={tailwind('mt-2 overflow-hidden  pb-2')} key={key}>
+                  <TouchableHighlight
+                    activeOpacity={0.8}
+                    underlayColor={getColor('biru')}
+                    style={tailwind('rounded-lg ')}
+                    onPress={() => handleToggle(day)}
+                    style={{
+                      ...tailwind('rounded-lg '),
+                      backgroundColor: getColor('biru'),
+                      paddingLeft: 5,
+                    }}>
+                    {/* Container */}
                     <View
                       style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
+                        ...tailwind(' rounded-lg bg-white px-2'),
+                        ...style.shadow,
                       }}>
-                      <View>
-                        <Text
-                          style={tailwind(
-                            'text-base text-gray-600 capitalize',
-                          )}>
-                          {day}
-                        </Text>
+                      <View style={tailwind(' px-2 py-3  border-gray-100')}>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <View>
+                            <Text
+                              style={tailwind(
+                                'text-base text-gray-600 capitalize',
+                              )}>
+                              {day}
+                            </Text>
+                          </View>
+                          <View>
+                            <Icon
+                              name={
+                                toggleJadwal[day]
+                                  ? 'chevron-up-outline'
+                                  : 'chevron-down-outline'
+                              }
+                              size={21}
+                            />
+                          </View>
+                        </View>
                       </View>
-                      <View>
-                        <Icon
-                          name={
-                            toggleJadwal[day]
-                              ? 'chevron-up-outline'
-                              : 'chevron-down-outline'
-                          }
-                          size={21}
-                        />
-                      </View>
+                      {toggleJadwal[day] && <Items />}
                     </View>
-                  </View>
-                  {toggleJadwal[day] && <Items />}
+                  </TouchableHighlight>
                 </View>
-              </TouchableHighlight>
+              ))}
             </View>
-          ))}
-        </ScrollView>
+          </ScrollView>
+        </View>
       </View>
     </React.Fragment>
   );

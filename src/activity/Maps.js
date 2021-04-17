@@ -64,23 +64,26 @@ const Maps = ({navigation: {dangerouslyGetParent}}) => {
         });
         setLoading(false);
       },
-      error => {},
+      error => {
+        Alert.alert('Error', error.message);
+      },
       {
         enableHighAccuracy: true,
         timeout: 20000,
         maximumAge: 1000,
         forceRequestLocation: true,
+        distanceFilter: 2,
       },
     );
   }, []);
   return (
-    <View style={{backgroundColor: 'white'}}>
+    <View style={{backgroundColor: 'white', height: height}}>
       {!loading && (
         <View style={{paddingTop: paddingTop}}>
           <MapView
             style={style.mapContainer}
             initialRegion={coord}
-            userLocationPriority="balanced"
+            userLocationPriority="high"
             followUserLocation={true}
             showsUserLocation={true}
             showsMyLocationButton={true}
