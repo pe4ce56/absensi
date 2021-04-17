@@ -1,5 +1,5 @@
-import React from 'react';
-import {useEffect, useState, useCallback} from 'react/cjs/react.development';
+import React, {useEffect, useState, useCallback} from 'react';
+
 import {useFocusEffect} from '@react-navigation/native';
 import {
   Dimensions,
@@ -8,17 +8,18 @@ import {
   TouchableHighlight,
   View,
   ToastAndroid,
+  ScrollView,
 } from 'react-native';
 import MapView, {Geojson, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
-const {tailwind} = create(styles);
+const {tailwind, getColor} = create(styles);
 const Maps = ({navigation: {dangerouslyGetParent}}) => {
   // to delete bottom bar
   useFocusEffect(
-    useCallback(() => {
+    React.useCallback(() => {
       const parent = dangerouslyGetParent();
       if (parent) {
         parent.setOptions({
@@ -45,7 +46,7 @@ const Maps = ({navigation: {dangerouslyGetParent}}) => {
     longitudeDelta: 0,
     longitude: 0,
   });
-  useEffect(() => {
+  React.useEffect(() => {
     ToastAndroid.showWithGravityAndOffset(
       'Sedang Mengambil lokasi',
       ToastAndroid.SHORT,
@@ -73,7 +74,7 @@ const Maps = ({navigation: {dangerouslyGetParent}}) => {
     );
   }, []);
   return (
-    <React.Fragment>
+    <View style={{backgroundColor: 'white'}}>
       {!loading && (
         <View style={{paddingTop: paddingTop}}>
           <MapView
@@ -94,27 +95,65 @@ const Maps = ({navigation: {dangerouslyGetParent}}) => {
               draggable={false}
             />
           </MapView>
-
-          <View style={tailwind(' items-center w-full h-full bg-white')}>
-            <View></View>
-            <TouchableHighlight
-              onPress={() => {}}
-              style={tailwind(
-                'mt-6 bg-blue-500   w-3/4 px-5 py-3 rounded items-center',
-              )}>
-              <Text style={tailwind('text-white font-bold')}>Absen</Text>
-            </TouchableHighlight>
+          <View style={{height: height * (2 / 3) - 80}}>
+            <ScrollView>
+              <View style={tailwind('px-5')}>
+                <View>
+                  <View>
+                    <Text style={style.label}>Mata Pelajaran</Text>
+                    <Text style={style.value}>Matematika</Text>
+                  </View>
+                  <View>
+                    <Text style={style.label}>Guru Pengajar</Text>
+                    <Text style={style.value}>Ririn Masita S.Pd</Text>
+                  </View>
+                  <View>
+                    <Text style={style.label}>Jam Pelajaran</Text>
+                    <Text style={style.value}>09.15 - 10.00</Text>
+                  </View>
+                  <View>
+                    <Text style={style.label}>Status</Text>
+                    <Text style={style.value}>Belum Absen</Text>
+                  </View>
+                </View>
+                <TouchableHighlight
+                  activeOpacity={0.8}
+                  underlayColor={getColor('biru')}
+                  onPress={() => {}}
+                  style={tailwind(
+                    'mt-6 bg-biru  w-full px-5 py-3 rounded self-center items-center',
+                  )}>
+                  <Text style={tailwind('text-white text-lg')}>Absen</Text>
+                </TouchableHighlight>
+              </View>
+            </ScrollView>
           </View>
         </View>
       )}
-    </React.Fragment>
+    </View>
   );
 };
 let {width, height} = Dimensions.get('window');
 const style = StyleSheet.create({
   mapContainer: {
     justifyContent: 'center',
-    height: height / 1.42,
+    height: height / 3,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: '100',
+    color: getColor('gray-400'),
+    marginTop: 20,
+  },
+  value: {
+    fontFamily: 'sans-serif-condensed',
+    fontSize: 18,
+    color: getColor('gray-900'),
+    fontWeight: '600',
+    marginTop: 5,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: getColor('gray-500'),
   },
 });
 

@@ -5,10 +5,10 @@ import {create} from 'tailwind-rn';
 import styles from '../../styles.json';
 import PasswordInputText from 'react-native-hide-show-password-input';
 import {TouchableHighlight} from 'react-native-gesture-handler';
-import {useFocusEffect} from '@react-navigation/core';
 
 const {tailwind, getColor} = create(styles);
 const ChangePassword = ({navigation: {dangerouslyGetParent}, navigation}) => {
+  let inputRef = null;
   // to delete bottom bar
   const [hide, setHide] = useState(false);
   useEffect(() => {
@@ -51,14 +51,8 @@ const ChangePassword = ({navigation: {dangerouslyGetParent}, navigation}) => {
         Gunakan password yang tidak mudah ditebak orang lain
       </Text>
       <View style={tailwind('px-4 mt-10')}>
-        <PasswordInputText
-          style={tailwind('border-gray-400 ')}
-          label="Password Baru"
-        />
-        <PasswordInputText
-          style={tailwind('border-gray-400 ')}
-          label="Konfirmasi Password Baru"
-        />
+        <PasswordInputText label="Password Baru" lineWidth={2} />
+        <PasswordInputText label="Konfirmasi Password Baru" lineWidth={2} />
         <TouchableHighlight
           activeOpacity={0.8}
           underlayColor={getColor('biru')}

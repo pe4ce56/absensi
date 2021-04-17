@@ -54,7 +54,7 @@ const Authentication = ({navigation: {dangerouslyGetParent}, navigation}) => {
         Untuk melanjutkan, verifikasi diri anda terlebih dahulu
       </Text>
       <View style={tailwind('px-4 mt-10')}>
-        <PasswordInputText style={tailwind('border-gray-400 ')} />
+        <PasswordInputText label="password" lineWidth={2} />
         <TouchableHighlight
           activeOpacity={0.8}
           underlayColor={getColor('biru')}

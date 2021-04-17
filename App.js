@@ -6,12 +6,12 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
+import 'react-native-gesture-handler';
 import {Text, Alert, BackHandler, PermissionsAndroid} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import styles from './styles.json';
 import {create, getColor} from 'tailwind-rn';
-import {useEffect} from 'react/cjs/react.development';
 import Navigation from './Navigation';
 const {tailwind} = create(styles);
 Text.defaultProps = Text.defaultProps || {};

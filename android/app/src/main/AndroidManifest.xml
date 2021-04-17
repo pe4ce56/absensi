@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <application
       android:required="false"
       android:name=".MainApplication"
@@ -14,6 +13,7 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
+      <uses-library android:name="org.apache.http.legacy" android:required="false"/>
       <meta-data
       android:name="com.google.android.maps.v2.API_KEY"
       android:value="AIzaSyAlqhm6Rb6CvppfZ9j8ZUEOm86l0v0F88Y"/>

@@ -13,7 +13,6 @@ import Jadwal from './src/activity/Jadwal';
 import Profile from './src/activity/Profile';
 import Authentication from './src/activity/Authentication';
 import ChangePassword from './src/activity/ChangePassword';
-import {getFocusedRouteNameFromRoute} from '@react-navigation/core';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
