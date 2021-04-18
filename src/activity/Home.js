@@ -111,11 +111,11 @@ const Home = ({navigation}) => {
         </Text>
         <View
           style={{
-            height: height - 220,
+            height: height - 250,
             paddingHorizontal: 16,
           }}>
           <ScrollView>
-            <View style={{paddingBottom: 40}}>
+            <View style={{paddingBottom: 90}}>
               {absen.map((data, key) => (
                 <View style={tailwind('overflow-hidden  pb-2 mt-2')} key={key}>
                   <TouchableHighlight

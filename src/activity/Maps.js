@@ -51,8 +51,8 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
   });
   React.useEffect(() => {
     ToastAndroid.showWithGravityAndOffset(
-      'Sedang Mengambil lokasi',
-      ToastAndroid.SHORT,
+      'Sedang mengambil lokasi, Tunggu samapai akurat',
+      ToastAndroid.LONG,
       ToastAndroid.TOP,
       30,
       50,
@@ -62,8 +62,8 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
         setCoord({
           longitude: position.coords.longitude,
           latitude: position.coords.latitude,
-          longitudeDelta: 0.005,
-          latitudeDelta: 0.005,
+          longitudeDelta: 0.0009,
+          latitudeDelta: 0.0009,
         });
         setLoading(false);
       },
@@ -73,6 +73,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
       {
         enableHighAccuracy: true,
         interval: 2000,
+        timeout: 10000,
         fastestInterval: 1000,
         distanceFilter: 2,
       },
@@ -86,8 +87,8 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
         backgroundColor={route.params.color}
         barStyle="light-content"
       />
-      <View style={{backgroundColor: 'white', height: height}}>
-        {!loading && (
+      {!loading && (
+        <View style={{backgroundColor: 'white', height: height}}>
           <View style={{paddingTop: paddingTop}}>
             <MapView
               style={style.mapContainer}
@@ -95,7 +96,6 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
               userLocationPriority="high"
               followUserLocation={true}
               showsUserLocation={true}
-              showsMyLocationButton={true}
               provider={PROVIDER_GOOGLE}
               onMapReady={() => setPaddingTop(0)}>
               <MapView.Marker
@@ -107,9 +107,9 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                 draggable={false}
               />
             </MapView>
-            <View style={{height: height * (2 / 3) - 80}}>
+            <View style={{height: height * (2 / 3)}}>
               <ScrollView>
-                <View style={tailwind('px-5')}>
+                <View style={tailwind('px-5 pb-20')}>
                   <View>
                     <View>
                       <Text style={style.label}>Mata Pelajaran</Text>
@@ -141,8 +141,21 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
               </ScrollView>
             </View>
           </View>
-        )}
-      </View>
+        </View>
+      )}
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            flex: 1,
+            top: 0,
+            left: 0,
+            width: width,
+            height: height,
+            backgroundColor: '#fff',
+            opacity: 0.7,
+          }}></View>
+      )}
     </SafeAreaView>
   );
 };
@@ -153,14 +166,13 @@ const style = StyleSheet.create({
     height: height / 3,
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '100',
     color: getColor('gray-400'),
     marginTop: 20,
   },
   value: {
-    fontFamily: 'sans-serif-condensed',
-    fontSize: 18,
+    fontSize: 15,
     color: getColor('gray-900'),
     fontWeight: '600',
     marginTop: 5,
