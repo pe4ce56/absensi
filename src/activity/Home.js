@@ -14,7 +14,7 @@ import {create} from 'tailwind-rn';
 import Header from '../components/Header';
 
 const {tailwind, getColor} = create(styles);
-let {width, height} = Dimensions.get('window');
+let {width, height} = Dimensions.get('screen');
 
 const Home = ({navigation}) => {
   const [absen, setAbsen] = useState([
@@ -98,7 +98,7 @@ const Home = ({navigation}) => {
       <Header />
       <View
         style={{
-          width: width,
+          width: '100%',
           backgroundColor: getColor('gray-50'),
           borderTopRightRadius: 40,
           flex: 1,

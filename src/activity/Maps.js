@@ -11,6 +11,7 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
+  Alert,
 } from 'react-native';
 import MapView, {Geojson, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
@@ -56,7 +57,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
       30,
       50,
     );
-    Geolocation.getCurrentPosition(
+    const watchId = Geolocation.watchPosition(
       position => {
         setCoord({
           longitude: position.coords.longitude,
@@ -71,12 +72,13 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
       },
       {
         enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-        forceRequestLocation: true,
+        interval: 2000,
+        fastestInterval: 1000,
         distanceFilter: 2,
       },
     );
+
+    return () => Geolocation.clearWatch(watchId);
   }, []);
   return (
     <SafeAreaView>
