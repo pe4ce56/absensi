@@ -13,6 +13,7 @@ import Jadwal from './src/activity/Jadwal';
 import Profile from './src/activity/Profile';
 import Authentication from './src/activity/Authentication';
 import ChangePassword from './src/activity/ChangePassword';
+import More from './src/activity/More';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -37,7 +38,7 @@ const HomeScreen = () => {
 };
 const ProfileStack = createStackNavigator();
 
-const ProfilScreen = () => {
+const MoreScreen = () => {
   const getBar = route => {
     const routeName = route.state
       ? route.state.routes[route.state.index].name
@@ -52,10 +53,11 @@ const ProfilScreen = () => {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
-        name="Profil"
-        component={Profile}
+        name="More"
+        component={More}
         options={{headerShown: false}}
       />
+      <ProfileStack.Screen name="Profil" component={Profile} />
       <ProfileStack.Screen
         name="Verifikasi Password"
         component={Authentication}
@@ -88,7 +90,7 @@ const Navigation = () => {
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center ')}>
               <Icon
-                name="clipboard-outline"
+                name={focused ? 'clipboard' : 'clipboard-outline'}
                 size={25}
                 color={focused ? getColor('biru') : getColor('gray-600')}
               />
@@ -112,7 +114,7 @@ const Navigation = () => {
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center')}>
               <Icon
-                name="time-outline"
+                name={focused ? 'time' : 'time-outline'}
                 size={25}
                 color={focused ? getColor('biru') : getColor('gray-600')}
               />
@@ -128,13 +130,13 @@ const Navigation = () => {
         }}
       />
       <Tab.Screen
-        name="Profil"
-        component={ProfilScreen}
+        name="More"
+        component={MoreScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center')}>
               <Icon
-                name="person-outline"
+                name={focused ? 'menu' : 'menu-outline'}
                 size={25}
                 color={focused ? getColor('biru') : getColor('gray-600')}
               />
@@ -143,7 +145,7 @@ const Navigation = () => {
                   fontSize: 13,
                   color: focused ? getColor('biru') : getColor('gray-600'),
                 }}>
-                Profil
+                More
               </Text>
             </View>
           ),

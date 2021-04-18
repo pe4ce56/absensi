@@ -15,7 +15,6 @@ import Header from '../components/Header';
 
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('window');
-console.log(height);
 
 const Home = ({navigation}) => {
   const [absen, setAbsen] = useState([

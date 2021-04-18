@@ -21,7 +21,7 @@ module.exports = {
         biru: '#00A1E9',
         abang: '#F0725E',
         abu: '#C4C4C4',
-        kuning: '#F9F871',
+        kuning: '#FF9A02',
         ireng: '#3A4856',
       },
       fontSize: {
