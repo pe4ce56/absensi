@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {Image, SafeAreaView, StatusBar, Text, View} from 'react-native';
 import tailwind from 'tailwind-rn';
 
 export default () => {
@@ -11,6 +11,7 @@ export default () => {
         ),
         backgroundColor: '#414865',
       }}>
+      <StatusBar backgroundColor="#414865" barStyle="light-content" />
       <View>
         <Text style={tailwind('text-base font-semibold text-white')}>
           XII Rekayasa Perangkat Lunak 1

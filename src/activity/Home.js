@@ -22,44 +22,74 @@ const Home = ({navigation}) => {
       mapel: 'Pendidikan Agama Islam',
       guru: 'Supardi,S.Pd MM',
       waktu: '07.05',
-      status: 'absented',
+      status: 'Sudah Absen',
     },
     {
       mapel: 'Bahasa Indonesia',
       guru: 'Supardi',
       waktu: '07.05',
-      status: 'late',
+      status: 'Terlambat',
     },
     {
       mapel: 'Bahasa Inggris',
       guru: 'Supardi',
       waktu: '07.05',
-      status: 'not absent',
+      status: 'Tidak Absen',
     },
     {
       mapel: 'Bahasa Inggris',
       guru: 'Supardi',
       waktu: '07.05',
-      status: 'active',
+      status: 'Belum Absen',
     },
-    {mapel: 'Bahasa jAWA', guru: 'Supardi', waktu: '07.05', status: 'ongoing'},
-    {mapel: 'Bahasa jAWA', guru: 'Supardi', waktu: '07.05', status: 'ongoing'},
-    {mapel: 'Bahasa jAWA', guru: 'Supardi', waktu: '07.05', status: 'ongoing'},
-    {mapel: 'Bahasa jAWA', guru: 'Supardi', waktu: '07.05', status: 'ongoing'},
-    {mapel: 'Bahasa jAWA', guru: 'Supardi', waktu: '07.05', status: 'ongoing'},
-    {mapel: 'Bahasa jAWA', guru: 'Supardi', waktu: '07.05', status: 'ongoing'},
+    {
+      mapel: 'Bahasa jAWA',
+      guru: 'Supardi',
+      waktu: '07.05',
+      status: 'Belum Mulai',
+    },
+    {
+      mapel: 'Bahasa jAWA',
+      guru: 'Supardi',
+      waktu: '07.05',
+      status: 'Belum Mulai',
+    },
+    {
+      mapel: 'Bahasa jAWA',
+      guru: 'Supardi',
+      waktu: '07.05',
+      status: 'Belum Mulai',
+    },
+    {
+      mapel: 'Bahasa jAWA',
+      guru: 'Supardi',
+      waktu: '07.05',
+      status: 'Belum Mulai',
+    },
+    {
+      mapel: 'Bahasa jAWA',
+      guru: 'Supardi',
+      waktu: '07.05',
+      status: 'Belum Mulai',
+    },
+    {
+      mapel: 'Bahasa jAWA',
+      guru: 'Supardi',
+      waktu: '07.05',
+      status: 'Belum Mulai',
+    },
   ]);
   const getBackground = status => {
     switch (status) {
-      case 'absented':
+      case 'Sudah Absen':
         return getColor('ijo');
-      case 'late':
+      case 'Terlambat':
         return getColor('kuning');
-      case 'not absent':
+      case 'Tidak Absen':
         return getColor('abang');
-      case 'active':
+      case 'Belum Absen':
         return getColor('biru');
-      case 'ongoing':
+      case 'Belum Mulai':
         return getColor('abu');
     }
   };
@@ -90,7 +120,12 @@ const Home = ({navigation}) => {
                 <View style={tailwind('overflow-hidden  pb-2 mt-2')} key={key}>
                   <TouchableHighlight
                     underlayColor={getBackground(data.status)}
-                    onPress={() => navigation.navigate('Absensi')}
+                    onPress={() =>
+                      navigation.navigate('Absensi', {
+                        ...data,
+                        color: getBackground(data.status),
+                      })
+                    }
                     activeOpacity={0.9}
                     style={{
                       ...tailwind('rounded-lg '),

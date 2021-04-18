@@ -29,8 +29,12 @@ const HomeScreen = () => {
       <HomeStack.Screen
         name="Absensi"
         component={Maps}
-        ooptions={({route}) => ({
+        options={({route}) => ({
           tabBarVisible: false,
+          headerStyle: {
+            backgroundColor: route.params.color,
+          },
+          headerTintColor: '#fff',
         })}
       />
     </HomeStack.Navigator>
