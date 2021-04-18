@@ -94,7 +94,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
               initialRegion={coord}
               userLocationPriority="high"
               followUserLocation={true}
-              showsUserLocation={false}
+              showsUserLocation={true}
               showsMyLocationButton={true}
               provider={PROVIDER_GOOGLE}
               onMapReady={() => setPaddingTop(0)}>
