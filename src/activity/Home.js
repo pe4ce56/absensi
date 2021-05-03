@@ -9,6 +9,8 @@ import {
   TouchableHighlight,
   TouchableHighlightBase,
 } from 'react-native';
+
+import Icon from 'react-native-vector-icons/Ionicons';
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
 import Header from '../components/Header';
@@ -55,7 +57,7 @@ const Home = ({navigation}) => {
       status: 'Belum Mulai',
     },
     {
-      mapel: 'Bahasa jAWA',
+      mapel: 'Bahasa Jawa',
       guru: 'Supardi',
       waktu: '07.05',
       status: 'Belum Mulai',
@@ -99,66 +101,130 @@ const Home = ({navigation}) => {
       <View
         style={{
           width: '100%',
-          backgroundColor: getColor('gray-50'),
-          borderTopRightRadius: 40,
+          backgroundColor: getColor('white'),
           flex: 1,
-          position: 'absolute',
-          top: 100,
           height: '100%',
         }}>
-        <Text style={tailwind('text-2xl text-gray-700 my-4 px-4')}>
-          Absensi hari ini
-        </Text>
         <View
           style={{
-            height: height - 250,
-            paddingHorizontal: 16,
-          }}>
-          <ScrollView>
-            <View style={{paddingBottom: 90}}>
-              {absen.map((data, key) => (
-                <View style={tailwind('overflow-hidden  pb-2 mt-2')} key={key}>
-                  <TouchableHighlight
-                    underlayColor={getBackground(data.status)}
-                    onPress={() =>
-                      navigation.navigate('Absensi', {
-                        ...data,
-                        color: getBackground(data.status),
-                      })
-                    }
-                    activeOpacity={0.9}
+            ...tailwind('border-l-2 border-gray-300 '),
+            backgroundColor: getColor('white'),
+            position: 'absolute',
+            left: width / 4,
+            width: '100%',
+            height: '100%',
+            top: 0,
+            zIndex: 0,
+          }}
+        />
+        <ScrollView>
+          <View style={{paddingBottom: 90, paddingTop: 10}}>
+            {absen.map((data, key) => (
+              <TouchableHighlight
+                key={key}
+                // underlayColor={getBackground(data.status)}
+                underlayColor={getColor('gray-50')}
+                onPress={() =>
+                  navigation.navigate('Absensi', {
+                    ...data,
+                    color: getBackground(data.status),
+                  })
+                }
+                activeOpacity={0.9}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginRight: 30,
+                    position: 'relative',
+                    backgroundColor: 'transparent',
+                    marginTop: 15,
+                    marginBottom: 15,
+                  }}>
+                  <View style={{width: width / 4, alignItems: 'center'}}>
+                    <Text style={{fontSize: 14}}>{data.waktu}</Text>
+                  </View>
+                  <View style={tailwind('px-7')}>
+                    <Text style={{fontSize: 16, color: getColor('gray-700')}}>
+                      {data.mapel}
+                    </Text>
+                    <Text style={{fontSize: 13, color: getColor('gray-400')}}>
+                      {data.guru}
+                    </Text>
+                    <Text style={{fontSize: 13, color: getColor('gray-500')}}>
+                      (Jam ke-1 s/d jam ke-2)
+                    </Text>
+                  </View>
+                  <View
                     style={{
-                      ...tailwind('rounded-lg '),
-                      backgroundColor: getBackground(data.status),
-                      paddingLeft: 5,
+                      flex: 1,
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
                     }}>
-                    <View
-                      style={{
-                        ...tailwind(
-                          'flex flex-row justify-between items-center rounded-lg px-4 py-3 bg-white',
-                        ),
-                        elevation: 2,
-                      }}>
-                      <View>
-                        <Text style={tailwind('text-tiny text-gray-500')}>
-                          {data.mapel}
-                        </Text>
-                        <Text style={tailwind('text-xs text-gray-400')}>
-                          {data.guru}
-                        </Text>
-                      </View>
-                      <View>
-                        <Text style={tailwind('text-xs text-gray-700')}>
-                          {data.waktu}
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableHighlight>
+                    <Icon
+                      name="chevron-forward-outline"
+                      size={20}
+                      color={getColor('gray-600')}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      ...tailwind(' rounded-full bg-white  '),
+                      position: 'absolute',
+                      left: width / 4 - 5.8,
+                      top: 3,
+                      width: 15,
+                      height: 15,
+                      borderWidth: 4,
+                      borderColor: getBackground(data.status),
+                    }}
+                  />
                 </View>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
+                {/* <View
+                    style={tailwind('overflow-hidden  pb-2 mt-2')}
+                    key={key}>
+                    <TouchableHighlight
+                      underlayColor={getBackground(data.status)}
+                      onPress={() =>
+                        navigation.navigate('Absensi', {
+                          ...data,
+                          color: getBackground(data.status),
+                        })
+                      }
+                      activeOpacity={0.9}
+                      style={{
+                        ...tailwind('rounded-lg '),
+                        backgroundColor: getBackground(data.status),
+                        paddingLeft: 5,
+                      }}>
+                      <View
+                        style={{
+                          ...tailwind(
+                            'flex flex-row justify-between items-center rounded-lg px-4 py-3 bg-white',
+                          ),
+                          elevation: 2,
+                        }}>
+                        <View>
+                          <Text style={tailwind('text-tiny text-gray-500')}>
+                            {data.mapel}
+                          </Text>
+                          <Text style={tailwind('text-xs text-gray-400')}>
+                            {data.guru}
+                          </Text>
+                        </View>
+                        <View>
+                          <Text style={tailwind('text-xs text-gray-700')}>
+                            {data.waktu}
+                          </Text>
+                        </View>
+                      </View>
+                    </TouchableHighlight>
+                  </View>
+                   */}
+              </TouchableHighlight>
+            ))}
+          </View>
+        </ScrollView>
       </View>
     </View>
   );

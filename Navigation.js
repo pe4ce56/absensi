@@ -14,6 +14,7 @@ import Profile from './src/activity/Profile';
 import Authentication from './src/activity/Authentication';
 import ChangePassword from './src/activity/ChangePassword';
 import More from './src/activity/More';
+import Login from './src/activity/Login';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -71,7 +72,7 @@ const MoreScreen = () => {
   );
 };
 
-const Navigation = () => {
+const MainTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -156,6 +157,24 @@ const Navigation = () => {
         }}
       />
     </Tab.Navigator>
+  );
+};
+
+const Stack = createStackNavigator();
+const Navigation = () => {
+  return (
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen
+        name="Login"
+        options={{headerShown: false}}
+        component={Login}
+      />
+      <Stack.Screen
+        name="Main"
+        options={{headerShown: false}}
+        component={MainTabs}
+      />
+    </Stack.Navigator>
   );
 };
 

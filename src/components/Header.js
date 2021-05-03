@@ -1,39 +1,49 @@
 import React from 'react';
-import {Image, SafeAreaView, StatusBar, Text, View} from 'react-native';
-import tailwind from 'tailwind-rn';
+import {
+  Image,
+  SafeAreaView,
+  StatusBar,
+  Text,
+  View,
+  Dimensions,
+} from 'react-native';
 
+import {create} from 'tailwind-rn';
+import styles from '../../styles.json';
+const {tailwind, getColor} = create(styles);
+let {width, height} = Dimensions.get('screen');
 export default () => {
   return (
     <View
       style={{
-        ...tailwind(
-          'flex flex-row justify-between bg-white px-6 py-6 w-full h-full bg-gray-500 ',
-        ),
-        backgroundColor: '#414865',
+        ...tailwind(' px-5 py-5 w-full  bg-biru relative'),
+        height: 150,
       }}>
-      <StatusBar backgroundColor="#414865" barStyle="light-content" />
-      <View>
-        <Text style={tailwind('text-base font-semibold text-white')}>
-          XII Rekayasa Perangkat Lunak 1
-        </Text>
-        <Text
-          style={{
-            ...tailwind(
-              'text-sm text-gray-900 rounded-full w-24 px-2 bg-gray-50',
-            ),
-            paddingVertical: 1,
-          }}>
-          10/05/2002
-        </Text>
+      <StatusBar backgroundColor={getColor('biru')} barStyle="light-content" />
+      <View style={tailwind('flex flex-row justify-between ')}>
+        <View>
+          <Text style={{fontSize: 18, color: '#fff'}}>Rabu</Text>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#fff',
+              marginTop: -2,
+            }}>
+            {new Date().toLocaleDateString()}
+          </Text>
+        </View>
+        <View>
+          <Image
+            style={tailwind('h-12 w-12 rounded-full ')}
+            source={{
+              uri:
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
+            }}
+          />
+        </View>
       </View>
-      <View>
-        <Image
-          style={tailwind('h-12 w-12 rounded-full ')}
-          source={{
-            uri:
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
-          }}
-        />
+      <View style={tailwind('absolute bottom-5 left-5 ')}>
+        <Text style={{fontSize: 24, color: '#fff'}}>Absen Hari Ini</Text>
       </View>
     </View>
   );

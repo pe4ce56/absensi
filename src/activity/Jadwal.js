@@ -75,7 +75,6 @@ const Jadwal = () => {
         style={{
           width: width,
           backgroundColor: getColor('gray-50'),
-          borderTopRightRadius: 40,
           flex: 1,
           position: 'absolute',
           top: 100,

@@ -84,7 +84,9 @@ const More = ({navigation}) => {
           style={style.menu}
           activeOpacity={0.9}
           underlayColor={getColor('red-50')}
-          onPress={() => {}}>
+          onPress={() => {
+            navigation.navigate('Login');
+          }}>
           <>
             <View
               style={{
