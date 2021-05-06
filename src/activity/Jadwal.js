@@ -23,8 +23,14 @@ UIManager.setLayoutAnimationEnabledExperimental &&
   UIManager.setLayoutAnimationEnabledExperimental(true);
 const {tailwind, getColor} = create(styles);
 const {width, height} = Dimensions.get('window');
-const days = ['senin', 'selasa', 'rabu', 'kamis', 'jumat'];
-const Jadwal = () => {
+const days = [
+  {day: 'Senin', time: '07.00 - 12.45'},
+  {day: 'Selasa', time: '06.30 - 12.45'},
+  {day: 'Rabu', time: '06.30 - 12.45'},
+  {day: 'Kamis', time: '06.30 - 12.45'},
+  {day: 'Jumat', time: '06.30 - 12.45'},
+];
+const Jadwal = ({navigation}) => {
   const [toggleJadwal, setToggleJadwal] = useState({
     senin: false,
     selasa: false,
@@ -39,7 +45,7 @@ const Jadwal = () => {
     //   set all toggle to false
     let toggleFalse = Object.assign(
       ...Object.keys(toggleJadwal).map(k => {
-        return {[k]: false};
+        return {[k.toLocaleLowerCase]: false};
       }),
     );
     setToggleJadwal({...toggleFalse, [day]: toggleJadwal[day] ? false : true});
@@ -73,77 +79,98 @@ const Jadwal = () => {
       <Header />
       <View
         style={{
-          width: width,
-          backgroundColor: getColor('gray-50'),
+          width: '100%',
+          height: '100%',
           flex: 1,
-          position: 'absolute',
-          top: 100,
-          height: height - 100,
+          backgroundColor: getColor('white'),
         }}>
-        <Text style={tailwind('text-2xl text-gray-600 my-4  px-4')}>
-          Jadwal Pelajaran
-        </Text>
-        <View
-          style={{
-            height: height - 220,
-            paddingHorizontal: 16,
-          }}>
-          <ScrollView>
-            <View style={{paddingBottom: 40}}>
-              {days.map((day, key) => (
-                // hidden the shadow top left
-                <View style={tailwind('mt-2 overflow-hidden  pb-2')} key={key}>
-                  <TouchableHighlight
-                    activeOpacity={0.8}
-                    underlayColor={getColor('biru')}
-                    style={tailwind('rounded-lg ')}
-                    onPress={() => handleToggle(day)}
+        <ScrollView>
+          <View
+            style={{paddingBottom: 40, paddingTop: 5, paddingHorizontal: 20}}>
+            {days.map((day, key) => (
+              // <TouchableHighlight
+              //   activeOpacity={0.8}
+              //   underlayColor={getColor('gray-50')}
+              //   onPress={() => navigation.navigate('ListJadwal')}>
+              //   <View
+              //     key={key}
+              //     style={{
+              //       display: 'flex',
+              //       flexDirection: 'row',
+              //       alignItems: 'center',
+              //       justifyContent: 'space-between',
+              //       width: '100%',
+              //       borderBottomWidth: 1,
+              //       paddingVertical: 25,
+              //       borderColor: getColor('gray-300'),
+              //     }}>
+              //     <View>
+              //       <Text style={{fontSize: 23, color: getColor('gray-600')}}>
+              //         {day.day}
+              //       </Text>
+              //       <Text style={{fontSize: 14, color: getColor('gray-400')}}>
+              //         {day.time}
+              //       </Text>
+              //     </View>
+              //     <Icon
+              //       name="chevron-forward-outline"
+              //       size={21}
+              //       color={getColor('gray-400')}
+              //     />
+              //   </View>
+              // </TouchableHighlight>
+              // hidden the shadow top left
+              <View style={tailwind('mt-2 overflow-hidden  pb-2')} key={key}>
+                <TouchableHighlight
+                  activeOpacity={0.8}
+                  underlayColor={getColor('biru')}
+                  style={tailwind('rounded-lg ')}
+                  onPress={() => handleToggle(day.day)}
+                  style={{
+                    ...tailwind('rounded-lg '),
+                    backgroundColor: getColor('biru'),
+                    paddingLeft: 5,
+                  }}>
+                  {/* Container */}
+                  <View
                     style={{
-                      ...tailwind('rounded-lg '),
-                      backgroundColor: getColor('biru'),
-                      paddingLeft: 5,
+                      ...tailwind(' rounded-lg bg-white px-2'),
+                      ...style.shadow,
                     }}>
-                    {/* Container */}
-                    <View
-                      style={{
-                        ...tailwind(' rounded-lg bg-white px-2'),
-                        ...style.shadow,
-                      }}>
-                      <View style={tailwind(' px-2 py-3  border-gray-100')}>
-                        <View
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                          }}>
-                          <View>
-                            <Text
-                              style={tailwind(
-                                'text-base text-gray-600 capitalize',
-                              )}>
-                              {day}
-                            </Text>
-                          </View>
-                          <View>
-                            <Icon
-                              name={
-                                toggleJadwal[day]
-                                  ? 'chevron-up-outline'
-                                  : 'chevron-down-outline'
-                              }
-                              size={21}
-                            />
-                          </View>
+                    <View style={tailwind(' px-2 py-3  border-gray-100')}>
+                      <View
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <View>
+                          <Text
+                            style={tailwind(
+                              'text-base text-gray-600 capitalize',
+                            )}>
+                            {day.day}
+                          </Text>
+                        </View>
+                        <View>
+                          <Icon
+                            name={
+                              toggleJadwal[day.day]
+                                ? 'chevron-up-outline'
+                                : 'chevron-down-outline'
+                            }
+                            size={21}
+                          />
                         </View>
                       </View>
-                      {toggleJadwal[day] && <Items />}
                     </View>
-                  </TouchableHighlight>
-                </View>
-              ))}
-            </View>
-          </ScrollView>
-        </View>
+                    {toggleJadwal[day.day] && <Items />}
+                  </View>
+                </TouchableHighlight>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </View>
     </React.Fragment>
   );

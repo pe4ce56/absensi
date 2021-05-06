@@ -15,6 +15,7 @@ import Authentication from './src/activity/Authentication';
 import ChangePassword from './src/activity/ChangePassword';
 import More from './src/activity/More';
 import Login from './src/activity/Login';
+import ListJadwal from './src/activity/ListJadwal';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
@@ -41,6 +42,72 @@ const HomeScreen = () => {
     </HomeStack.Navigator>
   );
 };
+
+const JadwalStack = createStackNavigator();
+
+const JadwalScreen = () => {
+  return (
+    <JadwalStack.Navigator>
+      <JadwalStack.Screen
+        name="Jadwal"
+        component={Jadwal}
+        options={{headerShown: false}}
+      />
+      <JadwalStack.Screen
+        name="ListJadwal"
+        component={ListJadwal}
+        options={({route}) => ({
+          tabBarVisible: false,
+
+          headerLeft: ({goBack}) => (
+            <View
+              style={{
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Icon
+                  name="arrow-back-outline"
+                  size={23}
+                  color={getColor('white')}
+                />
+                <Text
+                  style={{
+                    color: getColor('white'),
+                    marginLeft: 16,
+                    fontSize: 20,
+                  }}>
+                  Jadwal
+                </Text>
+              </View>
+              <Text
+                style={{
+                  marginTop: 30,
+                  color: getColor('white'),
+                  fontSize: 30,
+                }}>
+                {'Jadwal Hari Senin'}
+              </Text>
+            </View>
+          ),
+          headerTitle: () => <Text></Text>,
+          headerStyle: {
+            backgroundColor: getColor('biru'),
+            borderWidth: 0,
+            height: 100,
+          },
+          headerTintColor: '#fff',
+        })}
+      />
+    </JadwalStack.Navigator>
+  );
+};
+
 const ProfileStack = createStackNavigator();
 
 const MoreScreen = () => {
@@ -114,7 +181,7 @@ const MainTabs = () => {
 
       <Tab.Screen
         name="Jadwal"
-        component={Jadwal}
+        component={JadwalScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center')}>
