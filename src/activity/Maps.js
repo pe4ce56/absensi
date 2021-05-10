@@ -107,26 +107,34 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                 draggable={false}
               />
             </MapView>
-            <View style={{height: height * (2 / 3)}}>
+            <View style={style.cardContainer}>
               <ScrollView>
-                <View style={tailwind('px-5 pb-20')}>
+                <View style={style.card}>
                   <View>
-                    <View>
-                      <Text style={style.label}>Mata Pelajaran</Text>
-                      <Text style={style.value}>{route.params.mapel}</Text>
-                    </View>
-                    <View>
-                      <Text style={style.label}>Guru Pengajar</Text>
-                      <Text style={style.value}>{route.params.guru}</Text>
-                    </View>
-                    <View>
-                      <Text style={style.label}>Jam Pelajaran</Text>
-                      <Text style={style.value}>{route.params.waktu}</Text>
-                    </View>
-                    <View>
-                      <Text style={style.label}>Status</Text>
-                      <Text style={style.value}>{route.params.status}</Text>
-                    </View>
+                    <Text style={style.title}>Detail Kelas</Text>
+                    <View style={style.line} />
+                  </View>
+                  <View>
+                    <Text style={style.label}>Mata Pelajaran</Text>
+                    <Text style={style.value}>{route.params.mapel}</Text>
+                  </View>
+                  <View>
+                    <Text style={style.label}>Guru Pengajar</Text>
+                    <Text style={style.value}>{route.params.guru}</Text>
+                  </View>
+                  <View>
+                    <Text style={style.label}>Jam Pelajaran</Text>
+                    <Text style={style.value}>{route.params.waktu}</Text>
+                  </View>
+                  <View>
+                    <Text style={style.label}>Status</Text>
+                    <Text
+                      style={{
+                        ...style.value,
+                        color: route.params.color,
+                      }}>
+                      {route.params.status}
+                    </Text>
                   </View>
                   <TouchableHighlight
                     activeOpacity={0.8}
@@ -162,23 +170,52 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
 let {width, height} = Dimensions.get('window');
 const style = StyleSheet.create({
   mapContainer: {
-    justifyContent: 'center',
-    height: height / 3,
+    position: 'absolute',
+    width: width,
+    height: height / 2.5,
+  },
+  cardContainer: {
+    height: height,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+  card: {
+    alignSelf: 'center',
+    width: '100%',
+    elevation: 1,
+    backgroundColor: 'white',
+    paddingTop: 15,
+    paddingBottom: 90,
+    paddingHorizontal: 25,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    marginTop: height / 3,
+  },
+  title: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: getColor('gray-800'),
+    marginBottom: 5,
+  },
+  line: {
+    alignSelf: 'center',
+    width: 70,
+    height: 4,
+    backgroundColor: getColor('gray-200'),
   },
   label: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '100',
     color: getColor('gray-400'),
     marginTop: 20,
   },
   value: {
     fontSize: 15,
-    color: getColor('gray-900'),
-    fontWeight: '600',
+    color: getColor('gray-700'),
+
+    fontWeight: 'bold',
     marginTop: 5,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: getColor('gray-500'),
   },
 });
 

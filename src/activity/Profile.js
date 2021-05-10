@@ -43,21 +43,37 @@ const Profile = ({navigation}) => {
             </View>
           </TouchableHighlight>
           <View style={style.card}>
-            <Text style={style.title}>Data Pribadi</Text>
-            <Text style={style.label}>NISN</Text>
-            <Text style={style.value}>12312361256</Text>
-            <Text style={style.label}>Nama</Text>
-            <Text style={style.value}>Shevera Gosel</Text>
-            <Text style={style.label}>Kelas</Text>
-            <Text style={style.value}>12 Rekayasa Perangkat Lunak 1</Text>
-            <Text style={style.label}>Jenis Kelamin</Text>
-            <Text style={style.value}>Laki Laki</Text>
-            <Text style={style.label}>Kelas</Text>
-            <Text style={style.value}>12 Rekayasa Perangkat Lunak 1</Text>
-            <Text style={style.label}>Alamat</Text>
-            <Text style={style.value}>123 Main Street, New York, NY 10030</Text>
-            <Text style={style.label}>Tanggal Lahir</Text>
-            <Text style={style.value}>10 Mei 2020</Text>
+            <View>
+              <Text style={style.title}>DATA PRIBADI</Text>
+              <Text style={style.label}>NISN</Text>
+            </View>
+            <View>
+              <Text style={style.value}>12312361256</Text>
+              <Text style={style.label}>Nama</Text>
+              <Text style={style.value}>Shevera Gosel</Text>
+            </View>
+            <View>
+              <Text style={style.label}>Kelas</Text>
+              <Text style={style.value}>12 Rekayasa Perangkat Lunak 1</Text>
+            </View>
+            <View>
+              <Text style={style.label}>Jenis Kelamin</Text>
+              <Text style={style.value}>Laki Laki</Text>
+            </View>
+            <View>
+              <Text style={style.label}>Kelas</Text>
+              <Text style={style.value}>12 Rekayasa Perangkat Lunak 1</Text>
+            </View>
+            <View>
+              <Text style={style.label}>Alamat</Text>
+              <Text style={style.value}>
+                123 Main Street, New York, NY 10030
+              </Text>
+            </View>
+            <View>
+              <Text style={style.label}>Tanggal Lahir</Text>
+              <Text style={style.value}>10 Mei 2020</Text>
+            </View>
             <View style={{marginTop: 70}}>
               <TouchableHighlight
                 activeOpacity={0.8}
@@ -115,21 +131,21 @@ const style = StyleSheet.create({
     marginTop: 30,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     color: getColor('gray-700'),
   },
   label: {
-    fontSize: 15,
+    fontSize: 14,
     color: getColor('gray-400'),
     marginTop: 20,
   },
   value: {
     fontFamily: 'sans-serif-condensed',
-    fontSize: 17,
-    color: '#3A4856',
-    fontWeight: '500',
-    marginTop: 5,
+    fontSize: 15,
+    color: getColor('gray-600'),
+    fontWeight: '700',
+    marginTop: 2,
   },
   btnChangePassword: {
     display: 'flex',
