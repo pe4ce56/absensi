@@ -58,49 +58,8 @@ const JadwalScreen = () => {
         component={ListJadwal}
         options={({route}) => ({
           tabBarVisible: false,
+          headerShown: false,
 
-          headerLeft: ({goBack}) => (
-            <View
-              style={{
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-              }}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Icon
-                  name="arrow-back-outline"
-                  size={23}
-                  color={getColor('white')}
-                />
-                <Text
-                  style={{
-                    color: getColor('white'),
-                    marginLeft: 16,
-                    fontSize: 20,
-                  }}>
-                  Jadwal
-                </Text>
-              </View>
-              <Text
-                style={{
-                  marginTop: 30,
-                  color: getColor('white'),
-                  fontSize: 30,
-                }}>
-                {'Jadwal Hari Senin'}
-              </Text>
-            </View>
-          ),
-          headerTitle: () => <Text></Text>,
-          headerStyle: {
-            backgroundColor: getColor('biru'),
-            borderWidth: 0,
-            height: 100,
-          },
           headerTintColor: '#fff',
         })}
       />

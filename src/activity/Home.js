@@ -138,20 +138,19 @@ const Home = ({navigation}) => {
                     marginRight: 30,
                     position: 'relative',
                     backgroundColor: 'transparent',
-                    marginTop: 15,
-                    marginBottom: 15,
+                    marginVertical: 16,
                   }}>
                   <View style={{width: width / 4, alignItems: 'center'}}>
                     <Text style={{fontSize: 14}}>{data.waktu}</Text>
                   </View>
                   <View style={tailwind('px-7')}>
-                    <Text style={{fontSize: 16, color: getColor('gray-700')}}>
+                    <Text style={{fontSize: 16, color: getColor('gray-800')}}>
                       {data.mapel}
                     </Text>
-                    <Text style={{fontSize: 13, color: getColor('gray-400')}}>
+                    <Text style={{fontSize: 12, color: getColor('gray-400')}}>
                       {data.guru}
                     </Text>
-                    <Text style={{fontSize: 13, color: getColor('gray-500')}}>
+                    <Text style={{fontSize: 12, color: getColor('gray-500')}}>
                       (Jam ke-1 s/d jam ke-2)
                     </Text>
                   </View>
@@ -180,47 +179,6 @@ const Home = ({navigation}) => {
                     }}
                   />
                 </View>
-                {/* <View
-                    style={tailwind('overflow-hidden  pb-2 mt-2')}
-                    key={key}>
-                    <TouchableHighlight
-                      underlayColor={getBackground(data.status)}
-                      onPress={() =>
-                        navigation.navigate('Absensi', {
-                          ...data,
-                          color: getBackground(data.status),
-                        })
-                      }
-                      activeOpacity={0.9}
-                      style={{
-                        ...tailwind('rounded-lg '),
-                        backgroundColor: getBackground(data.status),
-                        paddingLeft: 5,
-                      }}>
-                      <View
-                        style={{
-                          ...tailwind(
-                            'flex flex-row justify-between items-center rounded-lg px-4 py-3 bg-white',
-                          ),
-                          elevation: 2,
-                        }}>
-                        <View>
-                          <Text style={tailwind('text-tiny text-gray-500')}>
-                            {data.mapel}
-                          </Text>
-                          <Text style={tailwind('text-xs text-gray-400')}>
-                            {data.guru}
-                          </Text>
-                        </View>
-                        <View>
-                          <Text style={tailwind('text-xs text-gray-700')}>
-                            {data.waktu}
-                          </Text>
-                        </View>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
-                   */}
               </TouchableHighlight>
             ))}
           </View>
