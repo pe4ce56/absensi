@@ -75,7 +75,7 @@ export default ({navigation, route}) => {
         />
         <ScrollView>
           <View style={{paddingBottom: 90, paddingTop: 10}}>
-            {[1, 2, 3, 4, 5].map((data, key) => (
+            {[1, 2, 3, 4, 5, 7, 8, 9].map((data, key) => (
               <TouchableHighlight
                 key={key}
                 // underlayColor={getBackground(data.status)}

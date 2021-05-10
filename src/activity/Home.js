@@ -97,7 +97,7 @@ const Home = ({navigation}) => {
   };
   return (
     <View style={{alignItems: 'center', flex: 1}}>
-      <Header />
+      <Header title="Absensi Hari Ini" />
       <View
         style={{
           width: '100%',

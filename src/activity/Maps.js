@@ -182,7 +182,7 @@ const style = StyleSheet.create({
   card: {
     alignSelf: 'center',
     width: '100%',
-    elevation: 1,
+    elevation: 4,
     backgroundColor: 'white',
     paddingTop: 15,
     paddingBottom: 90,
@@ -205,13 +205,13 @@ const style = StyleSheet.create({
     backgroundColor: getColor('gray-200'),
   },
   label: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '100',
     color: getColor('gray-400'),
     marginTop: 20,
   },
   value: {
-    fontSize: 15,
+    fontSize: 16,
     color: getColor('gray-700'),
 
     fontWeight: 'bold',

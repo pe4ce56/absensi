@@ -9,18 +9,40 @@ import {
   TouchableHighlight,
   Image,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import {TextField} from 'react-native-material-textfield';
 import {ScrollView} from 'react-native-gesture-handler';
-
+import axios from 'axios';
+import {API_ENDPOINT} from '../config/config';
 import {create} from 'tailwind-rn';
 import styles from '../../styles.json';
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('screen');
 export default ({navigation}) => {
   const [data, setData] = useState({
-    username: null,
-    password: null,
+    username: '0011223344',
+    password: 'siswa',
   });
+
+  const loginHandle = () => {
+    console.log(data);
+    axios(`${API_ENDPOINT}/login`, {
+      method: 'post',
+      data,
+    })
+      .then(async res => {
+        if (res.status) {
+          try {
+            await AsyncStorage.setItem('token', res.data.data.token);
+            navigation.navigate('Main');
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      })
+      .catch(error => console.log(error));
+  };
+
   const handleChange = (key, value) => {
     setData({...data, [key]: value});
   };
@@ -98,7 +120,7 @@ export default ({navigation}) => {
               </Text>
               <TextField
                 value={data.username}
-                onChangeText={val => handleChange(val, 'username')}
+                onChangeText={val => handleChange('username', val)}
                 style={{fontSize: 17}}
               />
               <Text
@@ -112,8 +134,9 @@ export default ({navigation}) => {
               </Text>
               <TextField
                 textContentType="password"
-                value={data.username}
-                onChangeText={val => handleChange(val, 'username')}
+                value={data.password}
+                secureTextEntry={true}
+                onChangeText={val => handleChange('password', val)}
                 style={{fontSize: 17}}
               />
               <TouchableHighlight
@@ -125,9 +148,7 @@ export default ({navigation}) => {
                 }}
                 underlayColor={getColor('blue-400')}
                 activeOpacity={0.9}
-                onPress={() => {
-                  navigation.navigate('Main');
-                }}>
+                onPress={loginHandle}>
                 <Text
                   style={{textAlign: 'center', color: '#fff', fontSize: 17}}>
                   Login

@@ -33,7 +33,7 @@ const days = [
 const Jadwal = ({navigation}) => {
   return (
     <React.Fragment>
-      <Header />
+      <Header title="Jadwal Pelajaran" />
       <View
         style={{
           width: '100%',
@@ -46,6 +46,7 @@ const Jadwal = ({navigation}) => {
             style={{paddingBottom: 40, paddingTop: 5, paddingHorizontal: 20}}>
             {days.map((day, key) => (
               <TouchableHighlight
+                key={key}
                 activeOpacity={0.8}
                 underlayColor={getColor('gray-50')}
                 onPress={() =>

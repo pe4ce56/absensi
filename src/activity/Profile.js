@@ -143,9 +143,10 @@ const style = StyleSheet.create({
   value: {
     fontFamily: 'sans-serif-condensed',
     fontSize: 15,
-    color: getColor('gray-600'),
-    fontWeight: '700',
-    marginTop: 2,
+    color: getColor('gray-500'),
+
+    fontWeight: 'bold',
+    marginTop: 5,
   },
   btnChangePassword: {
     display: 'flex',

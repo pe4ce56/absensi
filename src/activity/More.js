@@ -44,7 +44,7 @@ const More = ({navigation}) => {
               }}>
               <Icon
                 name="person-outline"
-                size={30}
+                size={25}
                 color={getColor('gray-400')}
               />
               <Text style={style.labelMenu}>Profil</Text>
@@ -70,7 +70,7 @@ const More = ({navigation}) => {
               }}>
               <Icon
                 name="information-circle-outline"
-                size={30}
+                size={25}
                 color={getColor('gray-400')}
               />
               <Text style={style.labelMenu}>Tentang Aplikasi</Text>
@@ -98,7 +98,7 @@ const More = ({navigation}) => {
               }}>
               <Icon
                 name="log-out-outline"
-                size={30}
+                size={25}
                 color={getColor('abang')}
               />
               <Text style={{...style.labelMenu, color: getColor('abang')}}>
@@ -146,8 +146,8 @@ const style = StyleSheet.create({
     borderColor: getColor('gray-200'),
   },
   labelMenu: {
-    fontSize: 18,
-    marginLeft: 16,
+    fontSize: 16,
+    marginLeft: 20,
   },
 });
 

@@ -12,7 +12,7 @@ import {create} from 'tailwind-rn';
 import styles from '../../styles.json';
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('screen');
-export default () => {
+export default ({title}) => {
   return (
     <View
       style={{
@@ -43,7 +43,7 @@ export default () => {
         </View>
       </View>
       <View style={tailwind('absolute bottom-5 left-5 ')}>
-        <Text style={{fontSize: 24, color: '#fff'}}>Absen Hari Ini</Text>
+        <Text style={{fontSize: 24, color: '#fff'}}>{title}</Text>
       </View>
     </View>
   );
