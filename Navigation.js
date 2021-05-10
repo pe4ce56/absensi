@@ -88,12 +88,36 @@ const MoreScreen = () => {
         component={More}
         options={{headerShown: false}}
       />
-      <ProfileStack.Screen name="Profil" component={Profile} />
+      <ProfileStack.Screen
+        name="Profil"
+        options={({route}) => ({
+          headerStyle: {
+            backgroundColor: getColor('biru'),
+          },
+          headerTintColor: '#fff',
+        })}
+        component={Profile}
+      />
       <ProfileStack.Screen
         name="Verifikasi Password"
         component={Authentication}
+        options={({route}) => ({
+          headerStyle: {
+            backgroundColor: getColor('biru'),
+          },
+          headerTintColor: '#fff',
+        })}
       />
-      <ProfileStack.Screen name="Ubah Password" component={ChangePassword} />
+      <ProfileStack.Screen
+        options={({route}) => ({
+          headerStyle: {
+            backgroundColor: getColor('biru'),
+          },
+          headerTintColor: '#fff',
+        })}
+        name="Ubah Password"
+        component={ChangePassword}
+      />
     </ProfileStack.Navigator>
   );
 };

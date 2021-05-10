@@ -17,17 +17,19 @@ const More = ({navigation}) => {
   return (
     <View style={{flex: 1, height: height, backgroundColor: '#fff'}}>
       <ScrollView>
-        <View style={tailwind('relative h-44 w-44 self-center  mt-10')}>
-          <Image
-            style={tailwind('h-44 w-44 self-center  rounded-full')}
-            source={{
-              uri:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
-            }}
-          />
+        <View style={tailwind('bg-biru py-14 mb-5')}>
+          <View style={tailwind('relative h-32 w-32 self-center  ')}>
+            <Image
+              style={tailwind('h-32 w-32 self-center  rounded-full')}
+              source={{
+                uri:
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
+              }}
+            />
+          </View>
+          <Text style={style.name}>Bandi Susanto</Text>
+          <Text style={style.kelas}>XII Rekaya Perangkat Lunak 1</Text>
         </View>
-        <Text style={style.name}>Bandi Susanto</Text>
-        <Text style={style.kelas}>XII Rekaya Perangkat Lunak 1</Text>
         <TouchableHighlight
           style={style.menu}
           activeOpacity={0.9}
@@ -120,24 +122,28 @@ const style = StyleSheet.create({
     fontWeight: '600',
     fontSize: 25,
     textAlign: 'center',
-    color: getColor('gray-900'),
-    marginTop: 25,
+    color: getColor('white'),
+    marginTop: 10,
     fontFamily: 'Roboto',
   },
   kelas: {
-    fontSize: 17,
-    color: getColor('gray-400'),
+    fontSize: 18,
+    color: getColor('white'),
     textAlign: 'center',
+    marginTop: 5,
     paddingHorizontal: 15,
-    marginBottom: 30,
   },
   menu: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 35,
-    paddingVertical: 16,
+    marginHorizontal: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 25,
+    borderBottomWidth: 1,
+    backgroundColor: '#fff',
+    borderColor: getColor('gray-200'),
   },
   labelMenu: {
     fontSize: 18,
