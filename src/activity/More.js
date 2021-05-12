@@ -11,6 +11,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {create} from 'tailwind-rn';
 import styles from '../../styles.json';
+
+import {logout} from '../helper/instance';
 const {tailwind, getColor} = create(styles);
 const {height} = Dimensions.get('window');
 const More = ({navigation}) => {
@@ -86,8 +88,8 @@ const More = ({navigation}) => {
           style={style.menu}
           activeOpacity={0.9}
           underlayColor={getColor('red-50')}
-          onPress={() => {
-            navigation.navigate('Login');
+          onPress={async () => {
+            await logout(navigation);
           }}>
           <>
             <View

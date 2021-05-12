@@ -16,6 +16,7 @@ import axios from 'axios';
 import {API_ENDPOINT} from '../config/config';
 import {create} from 'tailwind-rn';
 import styles from '../../styles.json';
+import {useEffect} from 'react/cjs/react.development';
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('screen');
 export default ({navigation}) => {
@@ -24,8 +25,14 @@ export default ({navigation}) => {
     password: 'siswa',
   });
 
+  useEffect(async () => {
+    const token = await AsyncStorage.getItem('token');
+    if (token) {
+      navigation.navigate('Main');
+    }
+  }, []);
+
   const loginHandle = () => {
-    console.log(data);
     axios(`${API_ENDPOINT}/login`, {
       method: 'post',
       data,

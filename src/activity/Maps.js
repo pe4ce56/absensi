@@ -116,15 +116,15 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                   </View>
                   <View>
                     <Text style={style.label}>Mata Pelajaran</Text>
-                    <Text style={style.value}>{route.params.mapel}</Text>
+                    <Text style={style.value}>{route.params.mapel.name}</Text>
                   </View>
                   <View>
                     <Text style={style.label}>Guru Pengajar</Text>
-                    <Text style={style.value}>{route.params.guru}</Text>
+                    <Text style={style.value}>{route.params.teacher.name}</Text>
                   </View>
                   <View>
                     <Text style={style.label}>Jam Pelajaran</Text>
-                    <Text style={style.value}>{route.params.waktu}</Text>
+                    <Text style={style.value}>{route.params.time}</Text>
                   </View>
                   <View>
                     <Text style={style.label}>Status</Text>

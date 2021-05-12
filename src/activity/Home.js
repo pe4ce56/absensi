@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,91 +10,35 @@ import {
   TouchableHighlightBase,
 } from 'react-native';
 
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
+
 import Header from '../components/Header';
+import {getHoursMinutes, getStatus, getBackground} from '../helper/helper';
+import {instance, authCheck} from '../helper/instance';
 
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('screen');
 
 const Home = ({navigation}) => {
-  const [absen, setAbsen] = useState([
-    {
-      mapel: 'Pendidikan Agama Islam',
-      guru: 'Supardi,S.Pd MM',
-      waktu: '07.05',
-      status: 'Sudah Absen',
-    },
-    {
-      mapel: 'Bahasa Indonesia',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Terlambat',
-    },
-    {
-      mapel: 'Bahasa Inggris',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Tidak Absen',
-    },
-    {
-      mapel: 'Bahasa Inggris',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Belum Absen',
-    },
-    {
-      mapel: 'Bahasa jAWA',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Belum Mulai',
-    },
-    {
-      mapel: 'Bahasa jAWA',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Belum Mulai',
-    },
-    {
-      mapel: 'Bahasa Jawa',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Belum Mulai',
-    },
-    {
-      mapel: 'Bahasa jAWA',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Belum Mulai',
-    },
-    {
-      mapel: 'Bahasa jAWA',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Belum Mulai',
-    },
-    {
-      mapel: 'Bahasa jAWA',
-      guru: 'Supardi',
-      waktu: '07.05',
-      status: 'Belum Mulai',
-    },
-  ]);
-  const getBackground = status => {
-    switch (status) {
-      case 'Sudah Absen':
-        return getColor('ijo');
-      case 'Terlambat':
-        return getColor('kuning');
-      case 'Tidak Absen':
-        return getColor('abang');
-      case 'Belum Absen':
-        return getColor('biru');
-      case 'Belum Mulai':
-        return getColor('abu');
+  const [absents, setAbsents] = useState([]);
+
+  useEffect(async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      instance(token)
+        .get('/siswa/absent')
+        .then(res => {
+          authCheck(res.data.code, navigation);
+          setAbsents(res.data.data);
+        })
+        .catch(err => authCheck(err?.response?.status, navigation));
+    } catch (error) {
+      console.log(error);
     }
-  };
+  }, []);
   return (
     <View style={{alignItems: 'center', flex: 1}}>
       <Header title="Absensi Hari Ini" />
@@ -119,15 +63,20 @@ const Home = ({navigation}) => {
         />
         <ScrollView>
           <View style={{paddingBottom: 90, paddingTop: 10}}>
-            {absen.map((data, key) => (
+            {absents.map((absent, key) => (
               <TouchableHighlight
                 key={key}
-                // underlayColor={getBackground(data.status)}
+                underlayColor={getBackground(
+                  getStatus(absent.time, absent.absented),
+                )}
                 underlayColor={getColor('gray-50')}
                 onPress={() =>
                   navigation.navigate('Absensi', {
-                    ...data,
-                    color: getBackground(data.status),
+                    ...absent,
+                    status: getStatus(absent.time, absent.absented),
+                    color: getBackground(
+                      getStatus(absent.time, absent.absented),
+                    ),
                   })
                 }
                 activeOpacity={0.9}>
@@ -141,14 +90,16 @@ const Home = ({navigation}) => {
                     marginVertical: 16,
                   }}>
                   <View style={{width: width / 4, alignItems: 'center'}}>
-                    <Text style={{fontSize: 14}}>{data.waktu}</Text>
+                    <Text style={{fontSize: 14}}>
+                      {getHoursMinutes(absent.time)}
+                    </Text>
                   </View>
                   <View style={tailwind('px-7')}>
                     <Text style={{fontSize: 16, color: getColor('gray-800')}}>
-                      {data.mapel}
+                      {absent.mapel.name}
                     </Text>
                     <Text style={{fontSize: 12, color: getColor('gray-400')}}>
-                      {data.guru}
+                      {absent.teacher.name}
                     </Text>
                     <Text style={{fontSize: 12, color: getColor('gray-500')}}>
                       (Jam ke-1 s/d jam ke-2)
@@ -175,7 +126,9 @@ const Home = ({navigation}) => {
                       width: 15,
                       height: 15,
                       borderWidth: 4,
-                      borderColor: getBackground(data.status),
+                      borderColor: getBackground(
+                        getStatus(absent.time, absent.absented),
+                      ),
                     }}
                   />
                 </View>
