@@ -13,6 +13,19 @@ import styles from '../../styles.json';
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('screen');
 export default ({title}) => {
+  const getDay = () => {
+    const Days = [
+      'Minggu',
+      'Senin',
+      'Selasa',
+      'Rabu',
+      'Kamis',
+      'Jum&#39;at',
+      'Sabtu',
+      'Minggu',
+    ];
+    return Days[new Date().getDay()];
+  };
   return (
     <View
       style={{
@@ -22,7 +35,7 @@ export default ({title}) => {
       <StatusBar backgroundColor={getColor('biru')} barStyle="light-content" />
       <View style={tailwind('flex flex-row justify-between ')}>
         <View>
-          <Text style={{fontSize: 18, color: '#fff'}}>Rabu</Text>
+          <Text style={{fontSize: 18, color: '#fff'}}>{getDay()}</Text>
           <Text
             style={{
               fontSize: 15,
@@ -36,8 +49,7 @@ export default ({title}) => {
           <Image
             style={tailwind('h-12 w-12 rounded-full ')}
             source={{
-              uri:
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
+              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
             }}
           />
         </View>

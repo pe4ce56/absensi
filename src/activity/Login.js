@@ -1,10 +1,10 @@
-import React from 'react';
-import {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
   Dimensions,
   Text,
+  Alert,
   TextInput,
   TouchableHighlight,
   Image,
@@ -12,18 +12,22 @@ import {
 import AsyncStorage from '@react-native-community/async-storage';
 import {TextField} from 'react-native-material-textfield';
 import {ScrollView} from 'react-native-gesture-handler';
+import Spinner from 'react-native-loading-spinner-overlay';
 import axios from 'axios';
-import {API_ENDPOINT} from '../config/config';
 import {create} from 'tailwind-rn';
+
 import styles from '../../styles.json';
-import {useEffect} from 'react/cjs/react.development';
+import {API_ENDPOINT} from '../config/config';
+
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('screen');
+
 export default ({navigation}) => {
   const [data, setData] = useState({
     username: '0011223344',
     password: 'siswa',
   });
+  const [spinner, setSpinner] = useState(false);
 
   useEffect(async () => {
     const token = await AsyncStorage.getItem('token');
@@ -33,8 +37,10 @@ export default ({navigation}) => {
   }, []);
 
   const loginHandle = () => {
+    setSpinner(true);
     axios(`${API_ENDPOINT}/login`, {
       method: 'post',
+      timeout: 10000,
       data,
     })
       .then(async res => {
@@ -46,8 +52,13 @@ export default ({navigation}) => {
             console.log(err);
           }
         }
+
+        setSpinner(false);
       })
-      .catch(error => console.log(error));
+      .catch(error => {
+        Alert.alert('Gagal terhubung ke server', 'Cek koneksi internet anda');
+        setSpinner(false);
+      });
   };
 
   const handleChange = (key, value) => {
@@ -61,6 +72,11 @@ export default ({navigation}) => {
         alignItems: 'center',
         flex: 1,
       }}>
+      <Spinner
+        visible={spinner}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       <View
         style={{
           width: width * 2,

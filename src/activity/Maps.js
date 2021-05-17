@@ -15,9 +15,16 @@ import {
 } from 'react-native';
 import MapView, {Geojson, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
+import AsyncStorage from '@react-native-community/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
+
+import {getHoursMinutes, getStatus, getBackground} from '../helper/helper';
 
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
+
+import {getTimeNow} from '../helper/helper';
+import {instance, authCheck} from '../helper/instance';
 const {tailwind, getColor} = create(styles);
 const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
   // to delete bottom bar
@@ -39,9 +46,10 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
       };
     }, [dangerouslyGetParent]),
   );
-
+  const [absen, setAbsen] = useState({});
   const [loading, setLoading] = useState(true);
   const [paddingTop, setPaddingTop] = useState(1);
+  const [spinner, setSpinner] = useState(true);
 
   const [coord, setCoord] = useState({
     latitude: 0,
@@ -49,9 +57,9 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
     longitudeDelta: 0,
     longitude: 0,
   });
-  React.useEffect(() => {
+  useEffect(() => {
     ToastAndroid.showWithGravityAndOffset(
-      'Sedang mengambil lokasi, Tunggu samapai akurat',
+      'Sedang mengambil lokasi, Tunggu sampai akurat',
       ToastAndroid.LONG,
       ToastAndroid.TOP,
       30,
@@ -66,6 +74,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
           latitudeDelta: 0.0009,
         });
         setLoading(false);
+        setSpinner(false);
       },
       error => {
         Alert.alert('Error', error.message);
@@ -79,16 +88,81 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
       },
     );
 
+    // setLoading(false);
     return () => Geolocation.clearWatch(watchId);
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      await getAbsen();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const getAbsen = async () => {
+    const {id} = route.params.data;
+    try {
+      const token = await AsyncStorage.getItem('token');
+      instance(token)
+        .get(`/siswa/get-absent-by-schedule/${id}`)
+        .then(res => {
+          authCheck(res.data.code, navigation);
+          navigation.setParams({
+            color: getBackground(
+              getStatus(res.data.data[0].time, res.data.data[0].absented),
+            ),
+          });
+          setAbsen(res.data.data[0]);
+        });
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
+
+  const absentHandler = async () => {
+    setSpinner(true);
+    const post = {
+      schedule_id: route.params.data.id,
+
+      absent_time: getTimeNow(),
+      location: JSON.stringify({lat: coord.latitude, long: coord.longitude}),
+    };
+
+    try {
+      const token = await AsyncStorage.getItem('token');
+      instance(token)
+        .post('/siswa/absent', post)
+        .then(res => {
+          authCheck(res.data.code, navigation);
+          setSpinner(false);
+          getAbsen();
+        })
+        .catch(err => {
+          authCheck(err?.response?.status, navigation);
+          setSpinner(false);
+        });
+    } catch (error) {
+      Alert.alert('Error', error.message);
+      setSpinner(false);
+    }
+  };
+
   return (
     <SafeAreaView>
-      <StatusBar
-        backgroundColor={route.params.color}
-        barStyle="light-content"
+      <Spinner
+        visible={spinner}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
       />
       {!loading && (
         <View style={{backgroundColor: 'white', height: height}}>
+          <StatusBar
+            backgroundColor={getBackground(
+              getStatus(absen?.time, absen?.absented),
+            )}
+            barStyle="light-content"
+          />
           <View style={{paddingTop: paddingTop}}>
             <MapView
               style={style.mapContainer}
@@ -116,35 +190,41 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                   </View>
                   <View>
                     <Text style={style.label}>Mata Pelajaran</Text>
-                    <Text style={style.value}>{route.params.mapel.name}</Text>
+                    <Text style={style.value}>{absen?.mapel?.name}</Text>
                   </View>
                   <View>
                     <Text style={style.label}>Guru Pengajar</Text>
-                    <Text style={style.value}>{route.params.teacher.name}</Text>
+                    <Text style={style.value}>{absen?.teacher?.name}</Text>
                   </View>
                   <View>
                     <Text style={style.label}>Jam Pelajaran</Text>
-                    <Text style={style.value}>{route.params.time}</Text>
+                    <Text style={style.value}>
+                      {getHoursMinutes(absen?.time)}
+                    </Text>
                   </View>
                   <View>
                     <Text style={style.label}>Status</Text>
                     <Text
                       style={{
                         ...style.value,
-                        color: route.params.color,
+                        color: getBackground(
+                          getStatus(absen?.time, absen?.absented),
+                        ),
                       }}>
-                      {route.params.status}
+                      {getStatus(absen?.time, absen.absented)}
                     </Text>
                   </View>
-                  <TouchableHighlight
-                    activeOpacity={0.8}
-                    underlayColor={getColor('biru')}
-                    onPress={() => {}}
-                    style={tailwind(
-                      'mt-6 bg-biru  w-full px-5 py-3 rounded self-center items-center',
-                    )}>
-                    <Text style={tailwind('text-white text-lg')}>Absen</Text>
-                  </TouchableHighlight>
+                  {!absen?.absented && (
+                    <TouchableHighlight
+                      activeOpacity={0.8}
+                      underlayColor={getColor('biru')}
+                      onPress={absentHandler}
+                      style={tailwind(
+                        'mt-6 bg-biru  w-full px-5 py-3 rounded self-center items-center',
+                      )}>
+                      <Text style={tailwind('text-white text-lg')}>Absen</Text>
+                    </TouchableHighlight>
+                  )}
                 </View>
               </ScrollView>
             </View>
@@ -169,6 +249,11 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
 };
 let {width, height} = Dimensions.get('window');
 const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   mapContainer: {
     position: 'absolute',
     width: width,

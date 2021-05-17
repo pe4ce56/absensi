@@ -3,18 +3,16 @@ import {
   View,
   Text,
   ScrollView,
-  StyleSheet,
+  Alert,
   Dimensions,
-  TouchableOpacity,
   TouchableHighlight,
-  TouchableHighlightBase,
 } from 'react-native';
-
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
-import styles from '../../styles.json';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {create} from 'tailwind-rn';
 
+import styles from '../../styles.json';
 import Header from '../components/Header';
 import {getHoursMinutes, getStatus, getBackground} from '../helper/helper';
 import {instance, authCheck} from '../helper/instance';
@@ -24,24 +22,41 @@ let {width, height} = Dimensions.get('screen');
 
 const Home = ({navigation}) => {
   const [absents, setAbsents] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      instance(token)
-        .get('/siswa/absent')
-        .then(res => {
-          authCheck(res.data.code, navigation);
-          setAbsents(res.data.data);
-        })
-        .catch(err => authCheck(err?.response?.status, navigation));
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      setLoading(true);
+      try {
+        const token = await AsyncStorage.getItem('token');
+        instance(token)
+          .get('/siswa/absent')
+          .then(res => {
+            authCheck(res.data.code, navigation);
+            setAbsents(res.data.data);
+            setLoading(false);
+          })
+          .catch(err => {
+            authCheck(err?.response?.status, navigation);
+            Alert.alert('Error', 'Kesalahanan saat mengambil data');
+            setLoading(false);
+          });
+      } catch (error) {
+        Alert.alert('Error', 'Kesalahanan saat mengambil data');
+        setLoading(false);
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
   return (
     <View style={{alignItems: 'center', flex: 1}}>
       <Header title="Absensi Hari Ini" />
+      <Spinner
+        visible={loading}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       <View
         style={{
           width: '100%',
@@ -72,7 +87,7 @@ const Home = ({navigation}) => {
                 underlayColor={getColor('gray-50')}
                 onPress={() =>
                   navigation.navigate('Absensi', {
-                    ...absent,
+                    data: {...absent},
                     status: getStatus(absent.time, absent.absented),
                     color: getBackground(
                       getStatus(absent.time, absent.absented),

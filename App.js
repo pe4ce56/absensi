@@ -10,14 +10,16 @@ import React, {useEffect} from 'react';
 import 'react-native-gesture-handler';
 import {Text, Alert, BackHandler, PermissionsAndroid} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {create, getColor} from 'tailwind-rn';
 import SplashScreen from 'react-native-splash-screen';
-
+import {create, getColor} from 'tailwind-rn';
 import styles from './styles.json';
 import Navigation from './Navigation';
+
 const {tailwind} = create(styles);
+
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.style = {fontFamily: 'Helvetica'};
+
 const App = () => {
   useEffect(async () => {
     var permissions = [

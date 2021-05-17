@@ -16,14 +16,17 @@ function getAbsentTime(time, totalJam) {
   const minutes = parseInt(time.split(':')[1]) + parseInt(30 * totalJam) + 5;
   return `${time.split(':')[0]}:${minutes}:${time.split(':')[2]}`;
 }
-
-function getStatus(time, absented, totalJam = 1) {
-  const now =
+function getTimeNow() {
+  return (
     new Date().getHours() +
     ':' +
     new Date().getMinutes() +
     ':' +
-    new Date().getSeconds();
+    new Date().getSeconds()
+  );
+}
+function getStatus(time, absented, totalJam = 1) {
+  const now = getTimeNow();
 
   const absentTime = getAbsentTime(time, totalJam);
 
@@ -71,5 +74,6 @@ const getBackground = status => {
 module.exports = {
   getHoursMinutes,
   getStatus,
+  getTimeNow,
   getBackground,
 };

@@ -4,7 +4,7 @@ import axios from 'axios';
 const instance = token => {
   return axios.create({
     baseURL: API_ENDPOINT,
-    timeout: 1000,
+    timeout: 10000,
     headers: {Authorization: 'Bearer ' + token},
   });
 };
@@ -15,7 +15,7 @@ const logout = async navigation => {
 };
 
 const authCheck = async (status, navigation) => {
-  if (status == 403 || status == 401) {
+  if (status == 401) {
     await logout(navigation);
   }
 };
