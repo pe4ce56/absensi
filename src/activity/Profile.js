@@ -3,14 +3,13 @@ import {
   View,
   Image,
   Text,
-  TouchableHighlight,
   StyleSheet,
   Dimensions,
   ScrollView,
-  TouchableHighlightBase,
+  Alert,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {create} from 'tailwind-rn';
 
 import styles from '../../styles.json';
@@ -19,10 +18,11 @@ import {instance, authCheck} from '../helper/instance';
 const {tailwind, getColor} = create(styles);
 const {height, width} = Dimensions.get('window');
 const Profile = ({navigation}) => {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState();
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
+      setLoading(true);
       try {
         const token = await AsyncStorage.getItem('token');
         instance(token)
@@ -30,11 +30,12 @@ const Profile = ({navigation}) => {
           .then(res => {
             authCheck(res.data.code, navigation);
             setProfile(res.data.data);
+            setLoading(false);
           })
           .catch(err => {
             authCheck(err?.response?.status, navigation);
-            Alert.alert('Error', 'Kesalahanan saat mengambil data');
             setLoading(false);
+            Alert.alert('Error', 'Kesalahanan saat mengambil data');
           });
       } catch (error) {
         setLoading(false);
@@ -45,6 +46,11 @@ const Profile = ({navigation}) => {
   }, []);
   return (
     <View style={style.container}>
+      <Spinner
+        visible={loading}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       <View style={style.rounded} />
       <ScrollView style={{width: width, height: height}}>
         <View style={{paddingBottom: 100}}>
