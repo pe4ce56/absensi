@@ -13,20 +13,19 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import MapView, {Geojson, PROVIDER_GOOGLE} from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-community/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-import {getHoursMinutes, getStatus, getBackground} from '../helper/helper';
+import Maps from '../components/Maps';
 
+import {getHoursMinutes, getStatus, getBackground} from '../helper/helper';
+import {getTimeNow} from '../helper/helper';
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
-
-import {getTimeNow} from '../helper/helper';
 import {instance, authCheck} from '../helper/instance';
 const {tailwind, getColor} = create(styles);
-const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
+const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
   // to delete bottom bar
   useFocusEffect(
     React.useCallback(() => {
@@ -177,23 +176,11 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
             barStyle="light-content"
           />
           <View style={{paddingTop: paddingTop}}>
-            <MapView
+            <Maps
               style={{...style.mapContainer, zIndex: zIndexMap}}
-              initialRegion={coord}
-              userLocationPriority="high"
-              followUserLocation={true}
-              showsUserLocation={true}
-              provider={PROVIDER_GOOGLE}
-              onMapReady={() => setPaddingTop(0)}>
-              <MapView.Marker
-                coordinate={{
-                  latitude: coord.latitude,
-                  longitude: coord.longitude,
-                }}
-                title={'Lokasi kamu saat ini'}
-                draggable={false}
-              />
-            </MapView>
+              coord={coord}
+              setPaddingTop={setPaddingTop}
+            />
             <View style={style.cardContainer}>
               <ScrollView
                 onScroll={({nativeEvent}) => {
@@ -326,4 +313,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default Maps;
+export default Absensi;

@@ -5,7 +5,7 @@ import styles from '../../styles.json';
 const {tailwind, getColor} = create(styles);
 
 import Home from '../activity/Home';
-import Maps from '../activity/Maps';
+import Absensi from '../activity/Absensi';
 import Jadwal from '../activity/Jadwal';
 import Profile from '../activity/Profile';
 import Authentication from '../activity/Authentication';
@@ -25,7 +25,7 @@ const HomeScreen = () => {
       />
       <HomeStack.Screen
         name="Absensi Siswa"
-        component={Maps}
+        component={Absensi}
         options={({route}) => ({
           tabBarVisible: false,
           headerStyle: {
