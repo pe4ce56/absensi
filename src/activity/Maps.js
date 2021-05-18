@@ -101,6 +101,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
   }, [navigation]);
 
   const getAbsen = async () => {
+    setLoading(true);
     const {id} = route.params.data;
     try {
       const token = await AsyncStorage.getItem('token');
@@ -114,8 +115,14 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
             ),
           });
           setAbsen(res.data.data[0]);
+        })
+        .catch(err => {
+          authCheck(err?.response?.status, navigation);
+          Alert.alert('Error', 'Kesalahanan saat mengambil data');
+          setLoading(false);
         });
     } catch (error) {
+      setLoading(false);
       Alert.alert('Error', error.message);
     }
   };
@@ -214,17 +221,21 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                       {getStatus(absen?.time, absen.absented)}
                     </Text>
                   </View>
-                  {!absen?.absented && (
-                    <TouchableHighlight
-                      activeOpacity={0.8}
-                      underlayColor={getColor('biru')}
-                      onPress={absentHandler}
-                      style={tailwind(
-                        'mt-6 bg-biru  w-full px-5 py-3 rounded self-center items-center',
-                      )}>
-                      <Text style={tailwind('text-white text-lg')}>Absen</Text>
-                    </TouchableHighlight>
-                  )}
+                  {!absen?.absented ||
+                    (getStatus(absen?.time, absen.absented) ===
+                      'Belum Mulai' && (
+                      <TouchableHighlight
+                        activeOpacity={0.8}
+                        underlayColor={getColor('biru')}
+                        onPress={absentHandler}
+                        style={tailwind(
+                          'mt-6 bg-biru  w-full px-5 py-3 rounded self-center items-center',
+                        )}>
+                        <Text style={tailwind('text-white text-lg')}>
+                          Absen
+                        </Text>
+                      </TouchableHighlight>
+                    ))}
                 </View>
               </ScrollView>
             </View>
@@ -256,13 +267,14 @@ const style = StyleSheet.create({
   },
   mapContainer: {
     position: 'absolute',
+    zIndex: 0,
     width: width,
     height: height / 2.5,
   },
   cardContainer: {
     height: height,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
   },
   card: {
     alignSelf: 'center',
@@ -272,8 +284,8 @@ const style = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 90,
     paddingHorizontal: 25,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     marginTop: height / 3,
   },
   title: {

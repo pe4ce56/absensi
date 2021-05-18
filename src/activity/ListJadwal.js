@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -6,13 +6,53 @@ import {
   Text,
   TouchableHighlight,
   View,
+  Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {create} from 'tailwind-rn';
+
 import styles from '../../styles.json';
+import {instance, authCheck} from '../helper/instance';
 const {tailwind, getColor} = create(styles);
 const {width, height} = Dimensions.get('screen');
+
 export default ({navigation, route}) => {
+  const [schedule, setSchedule] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      await getSchedule();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  const getSchedule = async () => {
+    setLoading(true);
+    try {
+      const day = route.params.code;
+      const token = await AsyncStorage.getItem('token');
+      const user = JSON.parse(await AsyncStorage.getItem('user'));
+
+      instance(token)
+        .get(`/siswa/get-schedule/${user.kelas.id}/${day}`)
+        .then(res => {
+          setLoading(false);
+          authCheck(res.data.code, navigation);
+          setSchedule(res.data.data);
+          console.log(res.data.data);
+        })
+        .catch(err => {
+          authCheck(err?.response?.status, navigation);
+          Alert.alert('Error', 'Kesalahanan saat mengambil data');
+          console.log(err);
+          setLoading(false);
+        });
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('Error', error.message);
+    }
+  };
   const Header = () => (
     <View
       style={{
@@ -75,7 +115,7 @@ export default ({navigation, route}) => {
         />
         <ScrollView>
           <View style={{paddingBottom: 90, paddingTop: 10}}>
-            {[1, 2, 3, 4, 5, 7, 8, 9].map((data, key) => (
+            {schedule.map((data, key) => (
               <TouchableHighlight
                 key={key}
                 // underlayColor={getBackground(data.status)}

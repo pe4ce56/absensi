@@ -47,6 +47,10 @@ export default ({navigation}) => {
         if (res.status) {
           try {
             await AsyncStorage.setItem('token', res.data.data.token);
+            await AsyncStorage.setItem(
+              'user',
+              JSON.stringify(res.data.data.user),
+            );
             navigation.navigate('Main');
           } catch (err) {
             console.log(err);

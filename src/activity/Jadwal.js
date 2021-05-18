@@ -24,11 +24,11 @@ UIManager.setLayoutAnimationEnabledExperimental &&
 const {tailwind, getColor} = create(styles);
 const {width, height} = Dimensions.get('window');
 const days = [
-  {day: 'Senin', time: '07.00 - 12.45'},
-  {day: 'Selasa', time: '06.30 - 12.45'},
-  {day: 'Rabu', time: '06.30 - 12.45'},
-  {day: 'Kamis', time: '06.30 - 12.45'},
-  {day: 'Jumat', time: '06.30 - 12.45'},
+  {day: 'Senin', time: '07.00 - 12.45', code: 1},
+  {day: 'Selasa', time: '06.30 - 12.45', code: 2},
+  {day: 'Rabu', time: '06.30 - 12.45', code: 3},
+  {day: 'Kamis', time: '06.30 - 12.45', code: 4},
+  {day: 'Jumat', time: '06.30 - 12.45', code: 5},
 ];
 const Jadwal = ({navigation}) => {
   return (
@@ -50,7 +50,10 @@ const Jadwal = ({navigation}) => {
                 activeOpacity={0.8}
                 underlayColor={getColor('gray-50')}
                 onPress={() =>
-                  navigation.navigate('ListJadwal', {day: day.day})
+                  navigation.navigate('ListJadwal', {
+                    day: day.day,
+                    code: day.code,
+                  })
                 }>
                 <View
                   key={key}
