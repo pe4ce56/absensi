@@ -88,7 +88,7 @@ const Jadwal = ({navigation}) => {
                   activeOpacity={0.8}
                   underlayColor={getColor('gray-50')}
                   onPress={() =>
-                    navigation.navigate('ListJadwal', {
+                    navigation.navigate('List Jadwal Siswa', {
                       day: day.day,
                       code: day.code,
                     })

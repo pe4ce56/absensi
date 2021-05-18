@@ -93,7 +93,7 @@ const Home = ({navigation}) => {
                 )}
                 underlayColor={getColor('gray-50')}
                 onPress={() =>
-                  navigation.navigate('Absensi', {
+                  navigation.navigate('Absensi Siswa', {
                     data: {...absent},
                     status: getStatus(absent.time, absent.absented),
                     color: getBackground(

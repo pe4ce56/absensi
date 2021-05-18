@@ -61,7 +61,7 @@ const More = ({navigation}) => {
             style={style.menu}
             activeOpacity={0.9}
             underlayColor={getColor('gray-50')}
-            onPress={() => navigation.navigate('Profil')}>
+            onPress={() => navigation.navigate('Profil Siswa')}>
             <>
               <View
                 style={{

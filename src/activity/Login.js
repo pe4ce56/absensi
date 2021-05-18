@@ -32,7 +32,7 @@ export default ({navigation}) => {
   useEffect(async () => {
     const token = await AsyncStorage.getItem('token');
     if (token) {
-      navigation.navigate('Main');
+      navigation.navigate('Siswa');
     }
   }, []);
 
@@ -51,7 +51,7 @@ export default ({navigation}) => {
               'user',
               JSON.stringify(res.data.data.user),
             );
-            navigation.navigate('Main');
+            navigation.navigate('Siswa');
           } catch (err) {
             console.log(err);
           }

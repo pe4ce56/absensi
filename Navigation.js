@@ -3,129 +3,19 @@ import {Text, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 import {create} from 'tailwind-rn';
 import styles from './styles.json';
 const {tailwind, getColor} = create(styles);
 
-import Home from './src/activity/Home';
-import Maps from './src/activity/Maps';
-import Jadwal from './src/activity/Jadwal';
-import Profile from './src/activity/Profile';
-import Authentication from './src/activity/Authentication';
-import ChangePassword from './src/activity/ChangePassword';
-import More from './src/activity/More';
 import Login from './src/activity/Login';
-import ListJadwal from './src/activity/ListJadwal';
+import Siswa from './src/Navigation/SiswaNavigation';
 
 const Tab = createBottomTabNavigator();
-const HomeStack = createStackNavigator();
-
-const HomeScreen = () => {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="Home"
-        component={Home}
-        options={{headerShown: false}}
-      />
-      <HomeStack.Screen
-        name="Absensi"
-        component={Maps}
-        options={({route}) => ({
-          tabBarVisible: false,
-          headerStyle: {
-            backgroundColor: route.params.color,
-          },
-          headerTintColor: '#fff',
-        })}
-      />
-    </HomeStack.Navigator>
-  );
-};
-
-const JadwalStack = createStackNavigator();
-
-const JadwalScreen = () => {
-  return (
-    <JadwalStack.Navigator>
-      <JadwalStack.Screen
-        name="Jadwal"
-        component={Jadwal}
-        options={{headerShown: false}}
-      />
-      <JadwalStack.Screen
-        name="ListJadwal"
-        component={ListJadwal}
-        options={({route}) => ({
-          tabBarVisible: false,
-          headerShown: false,
-
-          headerTintColor: '#fff',
-        })}
-      />
-    </JadwalStack.Navigator>
-  );
-};
-
-const ProfileStack = createStackNavigator();
-
-const MoreScreen = () => {
-  const getBar = route => {
-    const routeName = route.state
-      ? route.state.routes[route.state.index].name
-      : '';
-
-    if (routeName === 'Ubah Password') {
-      return false;
-    }
-
-    return true;
-  };
-  return (
-    <ProfileStack.Navigator>
-      <ProfileStack.Screen
-        name="More"
-        component={More}
-        options={{headerShown: false}}
-      />
-      <ProfileStack.Screen
-        name="Profil"
-        options={({route}) => ({
-          headerStyle: {
-            backgroundColor: getColor('biru'),
-          },
-          headerTintColor: '#fff',
-        })}
-        component={Profile}
-      />
-      <ProfileStack.Screen
-        name="Verifikasi Password"
-        component={Authentication}
-        options={({route}) => ({
-          headerStyle: {
-            backgroundColor: getColor('biru'),
-          },
-          headerTintColor: '#fff',
-        })}
-      />
-      <ProfileStack.Screen
-        options={({route}) => ({
-          headerStyle: {
-            backgroundColor: getColor('biru'),
-          },
-          headerTintColor: '#fff',
-        })}
-        name="Ubah Password"
-        component={ChangePassword}
-      />
-    </ProfileStack.Navigator>
-  );
-};
-
-const MainTabs = () => {
+const SiswaTabs = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeSiswa"
       tabBarOptions={{
         showLabel: false,
         style: {
@@ -139,8 +29,8 @@ const MainTabs = () => {
         },
       }}>
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeSiswa"
+        component={Siswa.HomeScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center ')}>
@@ -163,8 +53,8 @@ const MainTabs = () => {
       />
 
       <Tab.Screen
-        name="Jadwal"
-        component={JadwalScreen}
+        name="JadwalSiswa"
+        component={Siswa.JadwalScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center')}>
@@ -185,8 +75,8 @@ const MainTabs = () => {
         }}
       />
       <Tab.Screen
-        name="More"
-        component={MoreScreen}
+        name="MoreSiswa"
+        component={Siswa.MoreScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <View style={tailwind('items-center')}>
@@ -220,9 +110,9 @@ const Navigation = () => {
         component={Login}
       />
       <Stack.Screen
-        name="Main"
+        name="Siswa"
         options={{headerShown: false}}
-        component={MainTabs}
+        component={SiswaTabs}
       />
     </Stack.Navigator>
   );
