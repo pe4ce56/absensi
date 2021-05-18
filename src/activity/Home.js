@@ -44,7 +44,6 @@ const Home = ({navigation}) => {
           })
           .catch(err => {
             authCheck(err?.response?.status, navigation);
-            console.log(err);
             Alert.alert('Error', 'Kesalahanan saat mengambil data');
             setLoading(false);
           });

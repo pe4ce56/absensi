@@ -5,17 +5,16 @@ import {
   View,
   TouchableHighlight,
   StyleSheet,
-  Animated,
   Dimensions,
-  LayoutAnimation,
+  Alert,
   NativeModules,
 } from 'react-native';
 import {create} from 'tailwind-rn';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import Header from '../components/Header';
-
 import styles from '../../styles.json';
 import {instance, authCheck} from '../helper/instance';
 import {getHoursMinutes} from '../helper/helper';
@@ -50,16 +49,16 @@ const Jadwal = ({navigation}) => {
             authCheck(res.data.code, navigation);
             setSchedule(res.data.data);
             setLoading(false);
-            console.log(res.data.data);
-            console.log(schedule);
           })
           .catch(error => {
             authCheck(error?.response?.status, navigation);
-            console.log(error);
             setLoading(false);
+            Alert.alert('Error', 'Kesalahanan saat mengambil data');
           });
       } catch (error) {
         setLoading(false);
+
+        Alert.alert('Error', 'Kesalahanan saat mengambil data');
       }
     });
     return unsubscribe;
@@ -67,6 +66,11 @@ const Jadwal = ({navigation}) => {
   return (
     <React.Fragment>
       <Header title="Jadwal Pelajaran" />
+      <Spinner
+        visible={loading}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       {!loading && (
         <View
           style={{

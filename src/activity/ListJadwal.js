@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {create} from 'tailwind-rn';
 
 import styles from '../../styles.json';
@@ -96,6 +97,11 @@ export default ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Header />
+      <Spinner
+        visible={loading}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       <View
         style={{
           width: '100%',
