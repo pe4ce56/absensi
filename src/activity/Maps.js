@@ -50,7 +50,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [paddingTop, setPaddingTop] = useState(1);
   const [spinner, setSpinner] = useState(true);
-
+  const [zIndexMap, setZIndexMap] = useState(1);
   const [coord, setCoord] = useState({
     latitude: 0,
     latitudeDelta: 0,
@@ -178,7 +178,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
           />
           <View style={{paddingTop: paddingTop}}>
             <MapView
-              style={style.mapContainer}
+              style={{...style.mapContainer, zIndex: zIndexMap}}
               initialRegion={coord}
               userLocationPriority="high"
               followUserLocation={true}
@@ -195,7 +195,11 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
               />
             </MapView>
             <View style={style.cardContainer}>
-              <ScrollView>
+              <ScrollView
+                onScroll={({nativeEvent}) => {
+                  if (nativeEvent.contentOffset.y === 0) setZIndexMap(1);
+                  else setZIndexMap(0);
+                }}>
                 <View style={style.card}>
                   <View>
                     <Text style={style.title}>Detail Kelas</Text>
@@ -273,9 +277,8 @@ const style = StyleSheet.create({
   },
   mapContainer: {
     position: 'absolute',
-    zIndex: 0,
     width: width,
-    height: height / 2.5,
+    height: height / 3,
   },
   cardContainer: {
     height: height,
@@ -293,6 +296,7 @@ const style = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     marginTop: height / 3,
+    zIndex: 1,
   },
   title: {
     textAlign: 'center',
