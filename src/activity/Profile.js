@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Image,
@@ -10,11 +10,39 @@ import {
   TouchableHighlightBase,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-community/async-storage';
 import {create} from 'tailwind-rn';
+
 import styles from '../../styles.json';
+import {instance, authCheck} from '../helper/instance';
+
 const {tailwind, getColor} = create(styles);
 const {height, width} = Dimensions.get('window');
 const Profile = ({navigation}) => {
+  const [loading, setLoading] = useState();
+  const [profile, setProfile] = useState();
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        instance(token)
+          .get(`/siswa/profile`)
+          .then(res => {
+            authCheck(res.data.code, navigation);
+            setProfile(res.data.data);
+          })
+          .catch(err => {
+            authCheck(err?.response?.status, navigation);
+            Alert.alert('Error', 'Kesalahanan saat mengambil data');
+            setLoading(false);
+          });
+      } catch (error) {
+        setLoading(false);
+        Alert.alert('Error', error.message);
+      }
+    });
+    return unsubscribe;
+  }, []);
   return (
     <View style={style.container}>
       <View style={style.rounded} />
@@ -24,12 +52,11 @@ const Profile = ({navigation}) => {
             <Image
               style={tailwind('h-28 w-28 self-center  rounded-full')}
               source={{
-                uri:
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
+                uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
               }}
             />
           </View>
-          <TouchableHighlight
+          {/* <TouchableHighlight
             style={{
               ...tailwind(
                 'bg-biru py-1 px-2 mt-7 self-center rounded border-white ',
@@ -41,40 +68,36 @@ const Profile = ({navigation}) => {
                 UBAH FOTO
               </Text>
             </View>
-          </TouchableHighlight>
+          </TouchableHighlight> */}
           <View style={style.card}>
+            <Text style={style.title}>DATA PRIBADI</Text>
             <View>
-              <Text style={style.title}>DATA PRIBADI</Text>
               <Text style={style.label}>NISN</Text>
+              <Text style={style.value}>{profile?.NISN}</Text>
             </View>
             <View>
-              <Text style={style.value}>12312361256</Text>
               <Text style={style.label}>Nama</Text>
-              <Text style={style.value}>Shevera Gosel</Text>
+              <Text style={style.value}>{profile?.nama}</Text>
             </View>
             <View>
               <Text style={style.label}>Kelas</Text>
-              <Text style={style.value}>12 Rekayasa Perangkat Lunak 1</Text>
+              <Text style={style.value}>{profile?.class?.nama}</Text>
             </View>
             <View>
               <Text style={style.label}>Jenis Kelamin</Text>
-              <Text style={style.value}>Laki Laki</Text>
-            </View>
-            <View>
-              <Text style={style.label}>Kelas</Text>
-              <Text style={style.value}>12 Rekayasa Perangkat Lunak 1</Text>
-            </View>
-            <View>
-              <Text style={style.label}>Alamat</Text>
               <Text style={style.value}>
-                123 Main Street, New York, NY 10030
+                {profile?.jk === 'l' ? 'Laki Laki' : 'Perempuan'}
               </Text>
             </View>
             <View>
-              <Text style={style.label}>Tanggal Lahir</Text>
-              <Text style={style.value}>10 Mei 2020</Text>
+              <Text style={style.label}>Alamat</Text>
+              <Text style={style.value}>{profile?.alamat}</Text>
             </View>
-            <View style={{marginTop: 70}}>
+            <View>
+              <Text style={style.label}>Tanggal Lahir</Text>
+              <Text style={style.value}>{profile?.tanggal_lahir}</Text>
+            </View>
+            {/* <View style={{marginTop: 70}}>
               <TouchableHighlight
                 activeOpacity={0.8}
                 underlayColor={getColor('gray-300')}
@@ -96,7 +119,7 @@ const Profile = ({navigation}) => {
                   />
                 </>
               </TouchableHighlight>
-            </View>
+            </View> */}
           </View>
         </View>
       </ScrollView>
