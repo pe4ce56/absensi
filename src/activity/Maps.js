@@ -102,7 +102,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
 
   const getAbsen = async () => {
     setLoading(true);
-    const {id} = route.params.data;
+    const {id, total} = route.params.data;
     try {
       const token = await AsyncStorage.getItem('token');
       instance(token)
@@ -111,10 +111,16 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
           authCheck(res.data.code, navigation);
           navigation.setParams({
             color: getBackground(
-              getStatus(res.data.data[0].time, res.data.data[0].absented),
+              getStatus(
+                res.data.data[0].time,
+                res.data.data[0].absented,
+                total,
+              ),
             ),
           });
-          setAbsen(res.data.data[0]);
+          setAbsen({...res.data.data[0], total: total});
+
+          setLoading(false);
         })
         .catch(err => {
           authCheck(err?.response?.status, navigation);
@@ -162,11 +168,11 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
         textContent={'Sedang memuat...'}
         textStyle={{color: '#FFF'}}
       />
-      {!loading && (
+      {!loading && absen.id && (
         <View style={{backgroundColor: 'white', height: height}}>
           <StatusBar
             backgroundColor={getBackground(
-              getStatus(absen?.time, absen?.absented),
+              getStatus(absen?.time, absen?.absented, absen?.total),
             )}
             barStyle="light-content"
           />
@@ -215,14 +221,14 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                       style={{
                         ...style.value,
                         color: getBackground(
-                          getStatus(absen?.time, absen?.absented),
+                          getStatus(absen?.time, absen?.absented, absen?.total),
                         ),
                       }}>
-                      {getStatus(absen?.time, absen.absented)}
+                      {getStatus(absen?.time, absen?.absented, absen?.total)}
                     </Text>
                   </View>
-                  {!absen?.absented ||
-                    (getStatus(absen?.time, absen.absented) ===
+                  {!absen?.absented &&
+                    getStatus(absen?.time, absen?.absented, absen?.total) !==
                       'Belum Mulai' && (
                       <TouchableHighlight
                         activeOpacity={0.8}
@@ -235,7 +241,7 @@ const Maps = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                           Absen
                         </Text>
                       </TouchableHighlight>
-                    ))}
+                    )}
                 </View>
               </ScrollView>
             </View>

@@ -14,6 +14,7 @@ import {create} from 'tailwind-rn';
 
 import styles from '../../styles.json';
 import {instance, authCheck} from '../helper/instance';
+import {convertSchedule, getHoursMinutes} from '../helper/helper';
 const {tailwind, getColor} = create(styles);
 const {width, height} = Dimensions.get('screen');
 
@@ -35,12 +36,12 @@ export default ({navigation, route}) => {
       const user = JSON.parse(await AsyncStorage.getItem('user'));
 
       instance(token)
-        .get(`/siswa/get-schedule/${user.kelas.id}/${day}`)
+        .get(`/siswa/get-schedule-by-day/${day}`)
         .then(res => {
           setLoading(false);
           authCheck(res.data.code, navigation);
-          setSchedule(res.data.data);
-          console.log(res.data.data);
+
+          setSchedule(convertSchedule(res.data.data));
         })
         .catch(err => {
           authCheck(err?.response?.status, navigation);
@@ -53,6 +54,7 @@ export default ({navigation, route}) => {
       Alert.alert('Error', error.message);
     }
   };
+
   const Header = () => (
     <View
       style={{
@@ -115,58 +117,57 @@ export default ({navigation, route}) => {
         />
         <ScrollView>
           <View style={{paddingBottom: 90, paddingTop: 10}}>
-            {schedule.map((data, key) => (
-              <TouchableHighlight
+            {schedule.map((data, key, {length}) => (
+              <View
                 key={key}
-                // underlayColor={getBackground(data.status)}
-                underlayColor={getColor('gray-50')}
-                activeOpacity={0.9}>
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  marginRight: 30,
+                  position: 'relative',
+                  backgroundColor: 'transparent',
+                  marginVertical: 20,
+                }}>
+                <View style={{width: width / 4, alignItems: 'center'}}>
+                  <Text style={{fontSize: 14}}>
+                    {getHoursMinutes(data.time)}
+                  </Text>
+                </View>
+                <View style={tailwind('px-7')}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: getColor('gray-800'),
+                    }}>
+                    {data.mapel.name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      color: getColor('gray-400'),
+                    }}>
+                    {data.teacher.name}
+                  </Text>
+                  <Text style={{fontSize: 12, color: getColor('gray-500')}}>
+                    {`(Jam ke-${data.start} ${
+                      data.end ? `s/d jam ke- ${data.end}` : ''
+                    })`}
+                  </Text>
+                </View>
+
                 <View
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    marginRight: 30,
-                    position: 'relative',
-                    backgroundColor: 'transparent',
-                    marginVertical: 20,
-                  }}>
-                  <View style={{width: width / 4, alignItems: 'center'}}>
-                    <Text style={{fontSize: 14}}>07.00</Text>
-                  </View>
-                  <View style={tailwind('px-7')}>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        color: getColor('gray-800'),
-                      }}>
-                      Pendidikan Agama Islam
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: getColor('gray-400'),
-                      }}>
-                      John Cena, Spd. MM
-                    </Text>
-                    <Text style={{fontSize: 12, color: getColor('gray-500')}}>
-                      (Jam ke-1 s/d jam ke-2)
-                    </Text>
-                  </View>
-
-                  <View
-                    style={{
-                      ...tailwind(' rounded-full bg-white  '),
-                      position: 'absolute',
-                      left: width / 4 - 5.8,
-                      top: 3,
-                      width: 15,
-                      height: 15,
-                      borderWidth: 4,
-                      borderColor: getColor('abu'),
-                    }}
-                  />
-                </View>
-              </TouchableHighlight>
+                    ...tailwind(' rounded-full bg-white  '),
+                    position: 'absolute',
+                    left: width / 4 - 5.8,
+                    top: 3,
+                    width: 15,
+                    height: 15,
+                    borderWidth: 4,
+                    borderColor: getColor('abu'),
+                  }}
+                />
+              </View>
             ))}
           </View>
         </ScrollView>

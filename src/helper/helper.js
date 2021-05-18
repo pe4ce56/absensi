@@ -1,8 +1,23 @@
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
-const {tailwind, getColor} = create(styles);
 
-function getHoursMinutes(time) {
+import {JAM_PELAJARAN} from '../config/config';
+
+const {tailwind, getColor} = create(styles);
+function addMinutes(time, minsToAdd) {
+  function D(J) {
+    return (J < 10 ? '0' : '') + J;
+  }
+
+  var piece = time.split(':');
+
+  var mins = piece[0] * 60 + +piece[1] + +minsToAdd;
+
+  return D(((mins % (24 * 60)) / 60) | 0) + ':' + D(mins % 60) + ':' + piece[2];
+}
+
+function getHoursMinutes(time, mins = 0) {
+  time = addMinutes(time, mins);
   return time.split(':').slice(0, -1).join(':');
 }
 
@@ -11,11 +26,6 @@ function getMS(time) {
   return +timeParts[0] * (60000 * 60) + +timeParts[1] * 60000;
 }
 
-function getAbsentTime(time, totalJam) {
-  // +5 minutes for absent
-  const minutes = parseInt(time.split(':')[1]) + parseInt(30 * totalJam) + 5;
-  return `${time.split(':')[0]}:${minutes}:${time.split(':')[2]}`;
-}
 function getTimeNow() {
   return (
     new Date().getHours() +
@@ -25,15 +35,15 @@ function getTimeNow() {
     new Date().getSeconds()
   );
 }
+
 function getStatus(time, absented, totalJam = 1) {
   const now = getTimeNow();
-
-  const absentTime = getAbsentTime(time, totalJam);
-
+  // +5 minutes for absent
+  // 40 minutes per jam
+  const absentTime = addMinutes(time, JAM_PELAJARAN * totalJam + 5);
   //   absented
 
   if (absented) {
-    console.log(absented.waktu);
     if (getMS(absented.waktu) <= getMS(absentTime)) {
       return 'Sudah Absen';
     }
@@ -71,9 +81,30 @@ const getBackground = status => {
   }
 };
 
+const convertSchedule = absents => {
+  let combined = [];
+  for (const [i, absen] of absents.entries()) {
+    const index = combined.findIndex(
+      comb =>
+        comb?.mapel.id === absen.mapel.id &&
+        comb?.teacher.id === absen.teacher.id,
+    );
+    if (index > -1) {
+      combined[index]['end'] = i + 1;
+      combined[index]['total'] += 1;
+    } else {
+      absen['start'] = i + 1;
+      absen['total'] = 1;
+      combined.push(absen);
+    }
+  }
+  return combined;
+};
+
 module.exports = {
   getHoursMinutes,
   getStatus,
   getTimeNow,
   getBackground,
+  convertSchedule,
 };

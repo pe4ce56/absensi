@@ -14,7 +14,12 @@ import {create} from 'tailwind-rn';
 
 import styles from '../../styles.json';
 import Header from '../components/Header';
-import {getHoursMinutes, getStatus, getBackground} from '../helper/helper';
+import {
+  getHoursMinutes,
+  getStatus,
+  getBackground,
+  convertSchedule,
+} from '../helper/helper';
 import {instance, authCheck} from '../helper/instance';
 
 const {tailwind, getColor} = create(styles);
@@ -33,11 +38,13 @@ const Home = ({navigation}) => {
           .get('/siswa/absent')
           .then(res => {
             authCheck(res.data.code, navigation);
-            setAbsents(res.data.data);
+
             setLoading(false);
+            setAbsents(convertSchedule(res.data.data));
           })
           .catch(err => {
             authCheck(err?.response?.status, navigation);
+            console.log(err);
             Alert.alert('Error', 'Kesalahanan saat mengambil data');
             setLoading(false);
           });
@@ -49,6 +56,7 @@ const Home = ({navigation}) => {
 
     return unsubscribe;
   }, [navigation]);
+
   return (
     <View style={{alignItems: 'center', flex: 1}}>
       <Header title="Absensi Hari Ini" />
@@ -117,7 +125,9 @@ const Home = ({navigation}) => {
                       {absent.teacher.name}
                     </Text>
                     <Text style={{fontSize: 12, color: getColor('gray-500')}}>
-                      (Jam ke-1 s/d jam ke-2)
+                      {`(Jam ke-${absent.start} ${
+                        absent.end ? ` s/d jam ke- ${absent.end}` : ''
+                      })`}
                     </Text>
                   </View>
                   <View
@@ -142,7 +152,7 @@ const Home = ({navigation}) => {
                       height: 15,
                       borderWidth: 4,
                       borderColor: getBackground(
-                        getStatus(absent.time, absent.absented),
+                        getStatus(absent.time, absent.absented, absent.total),
                       ),
                     }}
                   />
