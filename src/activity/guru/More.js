@@ -12,9 +12,9 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
 import {create} from 'tailwind-rn';
-import styles from '../../styles.json';
+import styles from '../../../styles.json';
 
-import {instance, authCheck, logout} from '../helper/instance';
+import {instance, authCheck, logout} from '../../helper/instance';
 const {tailwind, getColor} = create(styles);
 const {height} = Dimensions.get('window');
 const More = ({navigation}) => {
@@ -24,8 +24,10 @@ const More = ({navigation}) => {
     const unsubscribe = navigation.addListener('focus', async () => {
       try {
         const token = await AsyncStorage.getItem('token');
+        const user = JSON.parse(await AsyncStorage.getItem('user'));
+
         instance(token)
-          .get(`/siswa/profile`)
+          .get(`/guru/profile/${user.id}`)
           .then(res => {
             authCheck(res.data.code, navigation);
             setProfile(res.data.data);
@@ -37,6 +39,7 @@ const More = ({navigation}) => {
           });
       } catch (error) {
         setLoading(false);
+        console.log(error);
         Alert.alert('Error', error.message);
       }
     });
@@ -55,14 +58,13 @@ const More = ({navigation}) => {
                 }}
               />
             </View>
-            <Text style={style.name}>{profile?.nama}</Text>
-            <Text style={style.kelas}>{profile?.class?.nama}</Text>
+            <Text style={style.name}>{profile?.name}</Text>
           </View>
           <TouchableHighlight
             style={style.menu}
             activeOpacity={0.9}
             underlayColor={getColor('gray-50')}
-            onPress={() => navigation.navigate('Profil Siswa')}>
+            onPress={() => navigation.navigate('Profil Guru')}>
             <>
               <View
                 style={{

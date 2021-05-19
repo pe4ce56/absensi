@@ -74,6 +74,28 @@ const GuruTabs = () => (
         ),
       }}
     />
+    <Tab.Screen
+      name="More Guru"
+      component={Guru.MoreScreen}
+      options={{
+        tabBarIcon: ({focused}) => (
+          <View style={tailwind('items-center')}>
+            <Icon
+              name={focused ? 'menu' : 'menu-outline'}
+              size={25}
+              color={focused ? getColor('biru') : getColor('gray-600')}
+            />
+            <Text
+              style={{
+                fontSize: 13,
+                color: focused ? getColor('biru') : getColor('gray-600'),
+              }}>
+              More
+            </Text>
+          </View>
+        ),
+      }}
+    />
   </Tab.Navigator>
 );
 

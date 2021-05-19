@@ -5,6 +5,8 @@ import {create} from 'tailwind-rn';
 import Home from '../activity/guru/Home';
 import Schedule from '../activity/guru/Schedule';
 import ScheduleList from '../activity/guru/ScheduleList';
+import More from '../activity/guru/More';
+import Profile from '../activity/guru/Profile';
 
 import styles from '../../styles.json';
 
@@ -46,7 +48,43 @@ const ScheduleScreen = () => {
   );
 };
 
+const MoreStack = createStackNavigator();
+
+const MoreScreen = () => {
+  const getBar = route => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
+
+    if (routeName === 'Ubah Password') {
+      return false;
+    }
+
+    return true;
+  };
+  return (
+    <MoreStack.Navigator>
+      <MoreStack.Screen
+        name="More Guru"
+        component={More}
+        options={{headerShown: false}}
+      />
+      <MoreStack.Screen
+        name="Profil Guru"
+        options={({route}) => ({
+          headerStyle: {
+            backgroundColor: getColor('biru'),
+          },
+          headerTintColor: '#fff',
+        })}
+        component={Profile}
+      />
+    </MoreStack.Navigator>
+  );
+};
+
 export default {
   HomeScreen,
   ScheduleScreen,
+  MoreScreen,
 };
