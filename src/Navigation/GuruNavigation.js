@@ -4,6 +4,7 @@ import {create} from 'tailwind-rn';
 
 import Home from '../activity/guru/Home';
 import Schedule from '../activity/guru/Schedule';
+import ScheduleList from '../activity/guru/ScheduleList';
 
 import styles from '../../styles.json';
 
@@ -30,6 +31,16 @@ const ScheduleScreen = () => {
         name="Schedule Guru"
         component={Schedule}
         options={{headerShown: false}}
+      />
+      <ScheduleStack.Screen
+        name="Teacher Schedule List"
+        component={ScheduleList}
+        options={({route}) => ({
+          tabBarVisible: false,
+          headerShown: false,
+
+          headerTintColor: '#fff',
+        })}
       />
     </ScheduleStack.Navigator>
   );

@@ -123,18 +123,20 @@ const getDate = date => {
   const year = date.getFullYear();
   return `${day} ${months[month]} ${year}`;
 };
-const getDay = () => {
+const getDay = (date = false) => {
   const Days = [
     'Minggu',
     'Senin',
     'Selasa',
     'Rabu',
     'Kamis',
-    'Jum&#39;at',
+    'Jumat',
     'Sabtu',
     'Minggu',
   ];
-  return Days[new Date().getDay()];
+  if (!date) return Days[new Date().getDay()];
+
+  return Days[new Date(date).getDay()];
 };
 module.exports = {
   getHoursMinutes,

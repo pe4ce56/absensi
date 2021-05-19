@@ -45,6 +45,7 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
+      setDate(new Date());
       await getAbsent();
     });
     return unsubscribe;
@@ -72,7 +73,6 @@ const Home = ({navigation}) => {
           Alert.alert('Error', 'Kesalahanan saat mengambil data');
         });
     } catch (error) {
-      console.log(err);
       setLoading(false);
       Alert.alert('Error', 'Kesalahanan saat mengambil data');
     }
@@ -93,7 +93,7 @@ const Home = ({navigation}) => {
           activeOpacity={0.9}>
           <View style={style.datePickerButton}>
             <Text style={style.date}>
-              {getDay()}, {getDate(date)}
+              {getDay(date)}, {getDate(date)}
             </Text>
             <Text style={style.labelDatePicker}>Ubah Tanggal</Text>
           </View>

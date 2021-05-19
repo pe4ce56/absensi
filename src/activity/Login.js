@@ -29,13 +29,16 @@ export default ({navigation}) => {
   });
   const [spinner, setSpinner] = useState(false);
 
-  useEffect(async () => {
-    const token = await AsyncStorage.getItem('token');
-    const user = await AsyncStorage.getItem('user');
-    if (token) {
-      if (user.role === 'siswa') navigation.navigate('Siswa');
-      else navigation.navigate('Guru');
-    }
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      const token = await AsyncStorage.getItem('token');
+      const user = await AsyncStorage.getItem('user');
+      if (token) {
+        if (user.role === 'siswa') navigation.navigate('Siswa');
+        else navigation.navigate('Guru');
+      }
+    });
+    return unsubscribe;
   }, []);
 
   const loginHandle = () => {
