@@ -81,14 +81,16 @@ const getBackground = status => {
   }
 };
 
-const convertSchedule = absents => {
+const convertSchedule = (absents, teacher = false) => {
   let combined = [];
   for (const [i, absen] of absents.entries()) {
-    const index = combined.findIndex(
-      comb =>
+    const index = combined.findIndex(comb => {
+      if (teacher) return comb?.mapel.id === absen.mapel.id;
+      return (
         comb?.mapel.id === absen.mapel.id &&
-        comb?.teacher.id === absen.teacher.id,
-    );
+        comb?.teacher.id === absen.teacher.id
+      );
+    });
     if (index > -1) {
       combined[index]['end'] = i + 1;
       combined[index]['total'] += 1;
@@ -101,10 +103,45 @@ const convertSchedule = absents => {
   return combined;
 };
 
+const getDate = date => {
+  const months = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember',
+  ];
+  const day = date.getDate();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  return `${day} ${months[month]} ${year}`;
+};
+const getDay = () => {
+  const Days = [
+    'Minggu',
+    'Senin',
+    'Selasa',
+    'Rabu',
+    'Kamis',
+    'Jum&#39;at',
+    'Sabtu',
+    'Minggu',
+  ];
+  return Days[new Date().getDay()];
+};
 module.exports = {
   getHoursMinutes,
   getStatus,
   getTimeNow,
   getBackground,
+  getDay,
+  getDate,
   convertSchedule,
 };

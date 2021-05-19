@@ -24,15 +24,17 @@ let {width, height} = Dimensions.get('screen');
 
 export default ({navigation}) => {
   const [data, setData] = useState({
-    username: '0011223344',
-    password: 'siswa',
+    username: '111112222233333444',
+    password: 'guru',
   });
   const [spinner, setSpinner] = useState(false);
 
   useEffect(async () => {
     const token = await AsyncStorage.getItem('token');
+    const user = await AsyncStorage.getItem('user');
     if (token) {
-      navigation.navigate('Siswa');
+      if (user.role === 'siswa') navigation.navigate('Siswa');
+      else navigation.navigate('Guru');
     }
   }, []);
 
@@ -42,6 +44,9 @@ export default ({navigation}) => {
       method: 'post',
       timeout: 10000,
       data,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
     })
       .then(async res => {
         if (res.status) {
@@ -51,7 +56,9 @@ export default ({navigation}) => {
               'user',
               JSON.stringify(res.data.data.user),
             );
-            navigation.navigate('Siswa');
+            if (res.data.data.user.role === 'siswa')
+              navigation.navigate('Siswa');
+            else navigation.navigate('Guru');
           } catch (err) {
             console.log(err);
           }
@@ -60,7 +67,8 @@ export default ({navigation}) => {
         setSpinner(false);
       })
       .catch(error => {
-        Alert.alert('Gagal terhubung ke server', 'Cek koneksi internet anda');
+        console.log(error);
+        Alert.alert('Terjadi Kesalahan', 'Username/Password salah!');
         setSpinner(false);
       });
   };

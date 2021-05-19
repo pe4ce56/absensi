@@ -7,25 +7,13 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-
 import {create} from 'tailwind-rn';
+
+import {getDay} from '../helper/helper';
 import styles from '../../styles.json';
 const {tailwind, getColor} = create(styles);
 let {width, height} = Dimensions.get('screen');
 export default ({title}) => {
-  const getDay = () => {
-    const Days = [
-      'Minggu',
-      'Senin',
-      'Selasa',
-      'Rabu',
-      'Kamis',
-      'Jum&#39;at',
-      'Sabtu',
-      'Minggu',
-    ];
-    return Days[new Date().getDay()];
-  };
   return (
     <View
       style={{

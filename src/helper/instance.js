@@ -5,7 +5,10 @@ const instance = token => {
   return axios.create({
     baseURL: API_ENDPOINT,
     timeout: 10000,
-    headers: {Authorization: 'Bearer ' + token},
+    headers: {
+      Authorization: 'Bearer ' + token,
+      'X-Requested-With': 'XMLHttpRequest',
+    },
   });
 };
 
@@ -15,7 +18,7 @@ const logout = async navigation => {
 };
 
 const authCheck = async (status, navigation) => {
-  if (status == 401) {
+  if (status == 401 || status == 403) {
     await logout(navigation);
   }
 };
