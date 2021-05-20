@@ -9,6 +9,7 @@ import styles from './styles.json';
 const {tailwind, getColor} = create(styles);
 
 import Login from './src/activity/Login';
+import About from './src/activity/About';
 import Siswa from './src/Navigation/SiswaNavigation';
 import Guru from './src/Navigation/GuruNavigation';
 
@@ -195,6 +196,13 @@ const Navigation = () => {
         name="Login"
         options={{headerShown: false}}
         component={Login}
+      />
+      <Stack.Screen
+        name="About"
+        component={About}
+        options={{
+          title: 'Tentang Aplikasi',
+        }}
       />
       <Stack.Screen
         name="Guru"

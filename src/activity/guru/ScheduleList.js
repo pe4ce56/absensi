@@ -122,6 +122,11 @@ const ScheduleList = ({
   return (
     <SafeAreaView>
       <Header />
+      <Spinner
+        visible={loading}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       <View style={{height: '100%'}}>
         <LineContainer>
           {schedule.map((item, key) => (
