@@ -69,8 +69,8 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
         setCoord({
           longitude: position.coords.longitude,
           latitude: position.coords.latitude,
-          longitudeDelta: 0.0009,
-          latitudeDelta: 0.0009,
+          longitudeDelta: 0.001,
+          latitudeDelta: 0.001,
         });
         setLoading(false);
         setSpinner(false);
@@ -97,7 +97,7 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
 
   const getAbsen = async () => {
     setLoading(true);
@@ -117,6 +117,16 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
               ),
             ),
           });
+          if (res.data.data[0].absented) {
+            const {lat, long} = JSON.parse(res.data.data[0].absented.lokasi);
+            console.log(lat, long);
+            setCoord({
+              longitudeDelta: 0.001,
+              latitudeDelta: 0.001,
+              latitude: lat,
+              longitude: long,
+            });
+          }
           setAbsen({...res.data.data[0], total: total});
 
           setLoading(false);
@@ -176,11 +186,13 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
             barStyle="light-content"
           />
           <View style={{paddingTop: paddingTop}}>
-            <Maps
-              style={{...style.mapContainer, zIndex: zIndexMap}}
-              coord={coord}
-              setPaddingTop={setPaddingTop}
-            />
+            {!loading && (
+              <Maps
+                style={{...style.mapContainer, zIndex: zIndexMap}}
+                coord={coord}
+                setPaddingTop={setPaddingTop}
+              />
+            )}
             <View style={style.cardContainer}>
               <ScrollView
                 onScroll={({nativeEvent}) => {

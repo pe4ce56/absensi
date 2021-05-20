@@ -173,6 +173,7 @@ const Home = ({navigation}) => {
           onTouchCancel={() => setShowDatePicker(false)}
           testID="dateTimePicker"
           mode="date"
+          maximumDate={new Date()}
           onChange={onChange}
           value={date}
           is24Hour={true}
