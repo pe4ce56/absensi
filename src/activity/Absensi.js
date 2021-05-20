@@ -152,10 +152,11 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
         })
         .catch(err => {
           authCheck(err?.response?.status, navigation);
+          Alert.alert('Error', JSON.stringify(err.response));
           setSpinner(false);
         });
     } catch (error) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', 'Terjadi Kesalahan');
       setSpinner(false);
     }
   };

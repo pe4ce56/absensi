@@ -52,6 +52,44 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
       };
     }, [dangerouslyGetParent]),
   );
+  const convertDate = () => {
+    const {date} = route.params;
+    return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+  };
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', async () => {
+      await getStudent();
+    });
+    return unsubscribe;
+  }, []);
+
+  const getStudent = async () => {
+    try {
+      setLoading(true);
+      const token = await AsyncStorage.getItem('token');
+      const {id} = route.params.data;
+      instance(token)
+        .get(`/guru/get-absent-student-list/${id}/${convertDate()}`)
+        .then(res => {
+          authCheck(res.data.code, navigation);
+          setLoading(false);
+          setStudents(res.data.data);
+          console.log(res.data.data);
+        })
+        .catch(err => {
+          authCheck(err?.response?.status, navigation);
+          setLoading(false);
+          console.log(err);
+          Alert.alert('Error', 'Kesalahanan saat mengambil data');
+        });
+    } catch (error) {
+      setLoading(false);
+      Alert.alert('Error', 'Kesalahanan saat mengambil data');
+    }
+  };
 
   const getJamPelajaran = () => {
     const timeStart = `${getHoursMinutes(route.params.data.time)} (Jam ke-${
@@ -95,15 +133,20 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
           <View style={{...style.card, marginTop: 30}}>
             <Text style={style.listTitle}>Daftar Absen</Text>
             <View style={style.line} />
-            {[1, 2, 3, 4, 5, 6, 76].map(() => (
-              <View style={style.containerList}>
+            {students.map((student, key) => (
+              <View style={style.containerList} key={key}>
                 <View>
-                  <Text style={style.valueList}>Micheal</Text>
-                  <Text style={style.labelList}>00.68</Text>
+                  <Text style={style.valueList}>{student.student.name}</Text>
+                  <Text style={style.labelList}>
+                    {getHoursMinutes(student.time)}
+                  </Text>
                 </View>
                 <View style={style.bullet} />
               </View>
             ))}
+            {students.length < 1 && (
+              <Text style={style.not_found}>Tidak ada yang absen</Text>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -180,6 +223,14 @@ const style = StyleSheet.create({
     borderRadius: 17,
     borderColor: getColor('ijo'),
     alignSelf: 'center',
+  },
+  not_found: {
+    fontSize: 20,
+    fontWeight: 'bold',
+
+    color: getColor('gray-400'),
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 

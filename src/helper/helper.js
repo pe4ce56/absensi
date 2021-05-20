@@ -27,8 +27,11 @@ function getMS(time) {
 }
 
 function getTimeNow() {
+  function D(J) {
+    return (J < 10 ? '0' : '') + J;
+  }
   return (
-    new Date().getHours() +
+    D(new Date().getHours()) +
     ':' +
     new Date().getMinutes() +
     ':' +
