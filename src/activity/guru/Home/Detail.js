@@ -27,6 +27,7 @@ const {getColor, tailwind} = create(styles);
 const {height, width} = Dimensions.get('window');
 
 const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
+  console.log(route.params.data);
   // to delete bottom bar
   useFocusEffect(
     React.useCallback(() => {
@@ -51,6 +52,11 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
     return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
   };
   const [students, setStudents] = useState([]);
+  const [count, setCount] = useState({
+    'Sudah Absen': 0,
+    Terlambat: 0,
+    'Tidak Absen': 0,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -65,13 +71,14 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
       setLoading(true);
       const token = await AsyncStorage.getItem('token');
       const {id} = route.params.data;
+      const id_kelas = route.params.data.class.id;
       instance(token)
-        .get(`/guru/get-absent-student-list/${id}/${convertDate()}`)
+        .get(`/guru/get-absent-student-list/${id_kelas}/${id}/${convertDate()}`)
         .then(res => {
           authCheck(res.data.code, navigation);
-          setLoading(false);
           setStudents(res.data.data);
-          console.log(res.data.data);
+          getCount(res.data.data);
+          setLoading(false);
         })
         .catch(err => {
           authCheck(err?.response?.status, navigation);
@@ -85,6 +92,28 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
     }
   };
 
+  const getCount = data => {
+    const temp = {
+      'Sudah Absen': 0,
+      Terlambat: 0,
+      'Tidak Absen': 0,
+    };
+    for (let student of data) {
+      temp[checkStatus(student.absent[0])] += 1;
+    }
+    setCount(temp);
+  };
+
+  const checkStatus = data => {
+    return getStatus(
+      data?.schedule?.waktu || '00:00:00',
+      data?.waktu && {
+        waktu: data?.waktu,
+      },
+      route.params.data.total,
+    );
+  };
+
   const getJamPelajaran = () => {
     const timeStart = `${getHoursMinutes(route.params.data.time)} (Jam ke-${
       route.params.data.start
@@ -95,6 +124,42 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
     )} (Jam ke-${route.params.data.end})`;
     return `${timeStart} ${route.params.data.end ? 's/d ' + timeEnd : ''}`;
   };
+
+  const Indicator = () => (
+    <View style={style.indicatorContainer}>
+      <View style={style.indicatorItem}>
+        <View
+          style={{
+            ...style.bullet,
+            borderColor: getColor('ijo'),
+          }}
+        />
+        <Text style={style.indicatorItemNumber}>{count['Sudah Absen']}</Text>
+        <Text style={style.indicatorItemText}>Sudah Absen</Text>
+      </View>
+      <View style={style.indicatorItem}>
+        <View
+          style={{
+            ...style.bullet,
+            borderColor: getColor('kuning'),
+          }}
+        />
+        <Text style={style.indicatorItemNumber}>{count['Terlambat']}</Text>
+        <Text style={style.indicatorItemText}>Terlambat</Text>
+      </View>
+      <View style={style.indicatorItem}>
+        <View
+          style={{
+            ...style.bullet,
+            borderColor: getColor('abang'),
+          }}
+        />
+        <Text style={style.indicatorItemNumber}>{count['Tidak Absen']}</Text>
+        <Text style={style.indicatorItemText}>Tidak Absen</Text>
+      </View>
+    </View>
+  );
+
   return (
     <View style={style.container}>
       <Spinner
@@ -127,29 +192,36 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                 <Text style={style.label}>JAM PELAJARAN</Text>
                 <Text style={style.value}>{getJamPelajaran()}</Text>
               </View>
+              <View
+                style={{
+                  marginTop: 10,
+                }}>
+                <Text style={style.label}>JUMLAH SISWA</Text>
+                <Text style={style.value}>
+                  {route.params.data.class.students[0].total}
+                </Text>
+              </View>
             </View>
           </View>
-          <View style={{...style.card, marginTop: 30}}>
-            <Text style={style.listTitle}>Daftar Absen</Text>
-            <View style={style.line} />
+          <Text style={{...style.listTitle, marginTop: 30}}>Absensi</Text>
+          <View style={{...style.card, marginTop: 10}}>
+            <Indicator />
+
+            <Text style={style.daftarSiswa}>Daftar Siswa</Text>
             {students.map((student, key) => (
               <View style={style.containerList} key={key}>
                 <View>
-                  <Text style={style.valueList}>{student.student.name}</Text>
+                  <Text style={style.valueList}>{student.nama}</Text>
                   <Text style={style.labelList}>
-                    {getHoursMinutes(student.time)}
+                    {student.absent[0]?.waktu
+                      ? getHoursMinutes(student.absent[0].waktu)
+                      : '-'}
                   </Text>
                 </View>
                 <View
                   style={{
                     ...style.bullet,
-                    borderColor: getBackground(
-                      getStatus(
-                        student?.schedule?.time,
-                        {waktu: student?.time},
-                        route.params.data.total,
-                      ),
-                    ),
+                    borderColor: getBackground(checkStatus(student?.absent[0])),
                   }}
                 />
               </View>
@@ -186,6 +258,37 @@ const style = StyleSheet.create({
     backgroundColor: 'white',
     padding: 16,
     borderRadius: 6,
+  },
+  indicatorContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingHorizontal: 5,
+    width: '100%',
+    marginVertical: 30,
+  },
+  indicatorItem: {
+    overflow: 'hidden',
+    width: (100 - 10) / 3 + '%',
+  },
+  indicatorItemNumber: {
+    textAlign: 'center',
+    marginVertical: 6,
+    fontSize: 21,
+    color: getColor('gray-800'),
+    fontWeight: 'bold',
+  },
+  indicatorItemText: {
+    textAlign: 'center',
+    fontSize: 14,
+    color: getColor('gray-600'),
+    flexWrap: 'wrap',
+  },
+  daftarSiswa: {
+    fontSize: 19,
+    marginVertical: 10,
+    textAlign: 'center',
+    color: getColor('gray-400'),
   },
 
   label: {
@@ -240,7 +343,7 @@ const style = StyleSheet.create({
 
     color: getColor('gray-400'),
     textAlign: 'center',
-    marginTop: 20,
+    marginVertical: 20,
   },
 });
 

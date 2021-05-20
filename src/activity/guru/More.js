@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {create} from 'tailwind-rn';
 import styles from '../../../styles.json';
 
@@ -47,6 +48,11 @@ const More = ({navigation}) => {
   }, []);
   return (
     <View style={{flex: 1, height: height, backgroundColor: '#fff'}}>
+      <Spinner
+        visible={loading}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       <ScrollView>
         <View style={{marginBottom: 90}}>
           <View style={tailwind('bg-biru py-14 mb-5')}>

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-community/async-storage';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {create} from 'tailwind-rn';
 import styles from '../../styles.json';
 
@@ -18,10 +19,11 @@ import {instance, authCheck, logout} from '../helper/instance';
 const {tailwind, getColor} = create(styles);
 const {height} = Dimensions.get('window');
 const More = ({navigation}) => {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState();
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
+      setLoading(true);
       try {
         const token = await AsyncStorage.getItem('token');
         instance(token)
@@ -29,6 +31,7 @@ const More = ({navigation}) => {
           .then(res => {
             authCheck(res.data.code, navigation);
             setProfile(res.data.data);
+            setLoading(false);
           })
           .catch(err => {
             authCheck(err?.response?.status, navigation);
@@ -44,6 +47,11 @@ const More = ({navigation}) => {
   }, []);
   return (
     <View style={{flex: 1, height: height, backgroundColor: '#fff'}}>
+      <Spinner
+        visible={loading}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       <ScrollView>
         <View style={{marginBottom: 90}}>
           <View style={tailwind('bg-biru py-14 mb-5')}>

@@ -5,6 +5,7 @@ import {
   Dimensions,
   Text,
   Alert,
+  StatusBar,
   TextInput,
   TouchableHighlight,
   Image,
@@ -24,13 +25,17 @@ let {width, height} = Dimensions.get('screen');
 
 export default ({navigation}) => {
   const [data, setData] = useState({
-    username: '111112222233333444',
-    password: 'guru',
+    username: '',
+    password: '',
   });
   const [spinner, setSpinner] = useState(false);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
+      setData({
+        username: '',
+        password: '',
+      });
       const token = await AsyncStorage.getItem('token');
       const user = await AsyncStorage.getItem('user');
       if (token) {
@@ -87,6 +92,7 @@ export default ({navigation}) => {
         alignItems: 'center',
         flex: 1,
       }}>
+      <StatusBar backgroundColor={getColor('biru')} barStyle="light-content" />
       <Spinner
         visible={spinner}
         textContent={'Sedang memuat...'}
