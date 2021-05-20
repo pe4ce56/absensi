@@ -96,7 +96,9 @@ const More = ({navigation}) => {
             style={style.menu}
             activeOpacity={0.9}
             underlayColor={getColor('gray-50')}
-            onPress={() => {}}>
+            onPress={() => {
+              navigation.navigate('About');
+            }}>
             <>
               <View
                 style={{

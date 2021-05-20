@@ -198,7 +198,7 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                 }}>
                 <Text style={style.label}>JUMLAH SISWA</Text>
                 <Text style={style.value}>
-                  {route.params.data.class.students[0].total}
+                  {route?.params?.data?.class?.students[0]?.total || 0}
                 </Text>
               </View>
             </View>

@@ -140,7 +140,6 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
       absent_time: getTimeNow(),
       location: JSON.stringify({lat: coord.latitude, long: coord.longitude}),
     };
-
     try {
       const token = await AsyncStorage.getItem('token');
       instance(token)

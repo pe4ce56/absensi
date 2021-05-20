@@ -65,6 +65,7 @@ const Home = ({navigation}) => {
           authCheck(res.data.code, navigation);
           setLoading(false);
           setSchedule(convertSchedule(res.data.data, true));
+          console.log(convertSchedule(res.data.data, true)[1].class.students);
         })
         .catch(err => {
           authCheck(err?.response?.status, navigation);
@@ -73,6 +74,7 @@ const Home = ({navigation}) => {
           Alert.alert('Error', 'Kesalahanan saat mengambil data');
         });
     } catch (error) {
+      console.log(error);
       setLoading(false);
       Alert.alert('Error', 'Kesalahanan saat mengambil data');
     }
