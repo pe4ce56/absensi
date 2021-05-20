@@ -5,26 +5,20 @@ import {
   Text,
   Alert,
   Dimensions,
-  TouchableHighlight,
-  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 import Spinner from 'react-native-loading-spinner-overlay';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import {create} from 'tailwind-rn';
 
-import Header from '../../../components/Header';
-import LineContainer from '../../../components/LineContainer';
 import {useFocusEffect} from '@react-navigation/core';
 
 import {JAM_PELAJARAN} from '../../../config/config';
 import {instance, authCheck} from '../../../helper/instance';
 import {
-  getDay,
-  getDate,
-  convertSchedule,
+  getBackground,
+  getStatus,
   getHoursMinutes,
 } from '../../../helper/helper';
 import styles from '../../../../styles.json';
@@ -103,6 +97,11 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
   };
   return (
     <View style={style.container}>
+      <Spinner
+        visible={loading}
+        textContent={'Sedang memuat...'}
+        textStyle={{color: '#FFF'}}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
@@ -141,7 +140,18 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                     {getHoursMinutes(student.time)}
                   </Text>
                 </View>
-                <View style={style.bullet} />
+                <View
+                  style={{
+                    ...style.bullet,
+                    borderColor: getBackground(
+                      getStatus(
+                        student?.schedule?.time,
+                        {waktu: student?.time},
+                        route.params.data.total,
+                      ),
+                    ),
+                  }}
+                />
               </View>
             ))}
             {students.length < 1 && (
