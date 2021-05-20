@@ -121,7 +121,9 @@ export default ({navigation, route}) => {
             zIndex: 0,
           }}
         />
-        <ScrollView>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}>
           <View style={{paddingBottom: 90, paddingTop: 10}}>
             {schedule.map((data, key, {length}) => (
               <View

@@ -39,20 +39,18 @@ const Schedule = ({navigation}) => {
     return unsubscribe;
   }, []);
   return (
-    <SafeAreaView>
+    <React.Fragment>
       <Header title="Jadwal Mengajar" />
       <Spinner
         visible={loading}
         textContent={'Sedang memuat...'}
         textStyle={{color: '#FFF'}}
       />
-      <View style={{height: '100%'}}>
-        <DayList
-          navigate={{navigation, to: 'Teacher Schedule List'}}
-          schedule={schedule}
-        />
-      </View>
-    </SafeAreaView>
+      <DayList
+        navigate={{navigation, to: 'Teacher Schedule List'}}
+        schedule={schedule}
+      />
+    </React.Fragment>
   );
 };
 

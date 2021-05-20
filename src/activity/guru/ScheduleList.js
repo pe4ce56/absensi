@@ -12,8 +12,7 @@ import {create} from 'tailwind-rn';
 
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-community/async-storage';
-
-import Header from '../../components/Header';
+import {useFocusEffect} from '@react-navigation/core';
 
 import styles from '../../../styles.json';
 import LineContainer from '../../components/LineContainer';
@@ -28,7 +27,30 @@ import {
 const {width, height} = Dimensions.get('screen');
 const {tailwind, getColor} = create(styles);
 
-const ScheduleList = ({navigation, route}) => {
+const ScheduleList = ({
+  navigation: {dangerouslyGetParent},
+  navigation,
+  route,
+}) => {
+  // to delete bottom bar
+  useFocusEffect(
+    React.useCallback(() => {
+      const parent = dangerouslyGetParent();
+      if (parent) {
+        parent.setOptions({
+          tabBarVisible: false,
+        });
+      }
+
+      return () => {
+        if (parent) {
+          parent.setOptions({
+            tabBarVisible: true,
+          });
+        }
+      };
+    }, [dangerouslyGetParent]),
+  );
   const [schedule, setSchedule] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {

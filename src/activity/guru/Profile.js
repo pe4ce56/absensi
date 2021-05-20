@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Spinner from 'react-native-loading-spinner-overlay';
+import {useFocusEffect} from '@react-navigation/core';
 import {create} from 'tailwind-rn';
 
 import styles from '../../../styles.json';
@@ -17,7 +18,26 @@ import {instance, authCheck} from '../../helper/instance';
 
 const {tailwind, getColor} = create(styles);
 const {height, width} = Dimensions.get('window');
-const Profile = ({navigation}) => {
+const Profile = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
+  // to delete bottom bar
+  useFocusEffect(
+    React.useCallback(() => {
+      const parent = dangerouslyGetParent();
+      if (parent) {
+        parent.setOptions({
+          tabBarVisible: false,
+        });
+      }
+
+      return () => {
+        if (parent) {
+          parent.setOptions({
+            tabBarVisible: true,
+          });
+        }
+      };
+    }, [dangerouslyGetParent]),
+  );
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState();
   useEffect(() => {

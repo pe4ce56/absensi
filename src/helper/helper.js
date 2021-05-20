@@ -85,7 +85,10 @@ const convertSchedule = (absents, teacher = false) => {
   let combined = [];
   for (const [i, absen] of absents.entries()) {
     const index = combined.findIndex(comb => {
-      if (teacher) return comb?.mapel.id === absen.mapel.id;
+      if (teacher)
+        return (
+          comb?.mapel.id === absen.mapel.id && comb?.class.id === absen.class.id
+        );
       return (
         comb?.mapel.id === absen.mapel.id &&
         comb?.teacher.id === absen.teacher.id

@@ -2,7 +2,8 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {create} from 'tailwind-rn';
 
-import Home from '../activity/guru/Home';
+import Home from '../activity/guru/Home/Home';
+import Detail from '../activity/guru/Home/Detail';
 import Schedule from '../activity/guru/Schedule';
 import ScheduleList from '../activity/guru/ScheduleList';
 import More from '../activity/guru/More';
@@ -20,6 +21,18 @@ const HomeScreen = () => {
         name="Home Guru"
         component={Home}
         options={{headerShown: false}}
+      />
+      <HomeStack.Screen
+        name="Detail Guru"
+        component={Detail}
+        options={{
+          title: 'Absensi',
+          tabBarVisible: false,
+          headerStyle: {
+            backgroundColor: getColor('biru'),
+          },
+          headerTintColor: '#fff',
+        }}
       />
     </HomeStack.Navigator>
   );

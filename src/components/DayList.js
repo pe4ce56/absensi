@@ -33,7 +33,9 @@ const DayList = ({navigate: {navigation, to}, schedule}) => {
         flex: 1,
         backgroundColor: getColor('white'),
       }}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
         <View style={{paddingBottom: 90, paddingTop: 5, paddingHorizontal: 20}}>
           {days.map((day, key) => (
             <TouchableHighlight
