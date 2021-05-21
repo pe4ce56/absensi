@@ -24,6 +24,7 @@ import {getTimeNow} from '../helper/helper';
 import styles from '../../styles.json';
 import {create} from 'tailwind-rn';
 import {instance, authCheck} from '../helper/instance';
+import {JAM_PELAJARAN} from '../config/config';
 const {tailwind, getColor} = create(styles);
 const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
   // to delete bottom bar
@@ -57,39 +58,44 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
     longitude: 0,
   });
   useEffect(() => {
-    ToastAndroid.showWithGravityAndOffset(
-      'Sedang mengambil lokasi, Tunggu sampai akurat',
-      ToastAndroid.LONG,
-      ToastAndroid.TOP,
-      30,
-      50,
-    );
-    const watchId = Geolocation.watchPosition(
-      position => {
-        setCoord({
-          longitude: position.coords.longitude,
-          latitude: position.coords.latitude,
-          longitudeDelta: 0.001,
-          latitudeDelta: 0.001,
-        });
-        setLoading(false);
-        setSpinner(false);
-      },
-      error => {
-        Alert.alert('Error', error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        interval: 2000,
-        timeout: 10000,
-        fastestInterval: 1000,
-        distanceFilter: 2,
-      },
-    );
+    if (!absen.absented) {
+      setLoading(true);
+      setSpinner(true);
+      ToastAndroid.showWithGravityAndOffset(
+        'Sedang mengambil lokasi, Tunggu sampai akurat',
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        30,
+        50,
+      );
+      const watchId = Geolocation.watchPosition(
+        position => {
+          setCoord({
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude,
+            longitudeDelta: 0.001,
+            latitudeDelta: 0.001,
+          });
+          setLoading(false);
+          setSpinner(false);
+          console.log(position);
+        },
+        error => {
+          Alert.alert('Error', error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          interval: 2000,
+          timeout: 10000,
+          fastestInterval: 1000,
+          distanceFilter: 2,
+        },
+      );
 
-    // setLoading(false);
-    return () => Geolocation.clearWatch(watchId);
-  }, []);
+      // setLoading(false);
+      return () => Geolocation.clearWatch(watchId);
+    }
+  }, [absen]);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
@@ -101,13 +107,16 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
 
   const getAbsen = async () => {
     setLoading(true);
+    setSpinner(true);
     const {id, total} = route.params.data;
+    console.log('id', id);
     try {
       const token = await AsyncStorage.getItem('token');
       instance(token)
         .get(`/siswa/get-absent-by-schedule/${id}`)
         .then(res => {
           authCheck(res.data.code, navigation);
+          console.log(res.data.data);
           navigation.setParams({
             color: getBackground(
               getStatus(
@@ -127,17 +136,23 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
               longitude: long,
             });
           }
+          console.log(res.data.data);
           setAbsen({...res.data.data[0], total: total});
 
           setLoading(false);
+          setSpinner(false);
         })
         .catch(err => {
           authCheck(err?.response?.status, navigation);
           Alert.alert('Error', 'Kesalahanan saat mengambil data');
           setLoading(false);
+          setSpinner(false);
+          console.log(err);
         });
     } catch (error) {
       setLoading(false);
+      setSpinner(false);
+      console.log(err);
       Alert.alert('Error', error.message);
     }
   };
@@ -177,7 +192,7 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
         textContent={'Sedang memuat...'}
         textStyle={{color: '#FFF'}}
       />
-      {!loading && absen.id && (
+      {!spinner && absen.id && (
         <View style={{backgroundColor: 'white', height: height}}>
           <StatusBar
             backgroundColor={getBackground(
@@ -215,7 +230,11 @@ const Absensi = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
                   <View>
                     <Text style={style.label}>Jam Pelajaran</Text>
                     <Text style={style.value}>
-                      {getHoursMinutes(absen?.time)}
+                      {getHoursMinutes(absen?.time)} -{' '}
+                      {getHoursMinutes(
+                        absen?.time,
+                        absen?.total * JAM_PELAJARAN,
+                      )}
                     </Text>
                   </View>
                   <View>

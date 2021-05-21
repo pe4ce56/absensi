@@ -50,7 +50,7 @@ const Jadwal = ({navigation}) => {
         textContent={'Sedang memuat...'}
         textStyle={{color: '#FFF'}}
       />
-      {!loading && (
+      {!loading && schedule && (
         <DayList
           navigate={{navigation, to: 'List Jadwal Siswa'}}
           schedule={schedule}

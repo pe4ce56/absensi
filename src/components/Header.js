@@ -37,7 +37,7 @@ export default ({title}) => {
           <Image
             style={tailwind('h-12 w-12 rounded-full ')}
             source={{
-              uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYLS5K1aszN2SkSpLdr4kLSCEeMBQMi5YSvA&usqp=CAU',
+              uri: 'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
             }}
           />
         </View>

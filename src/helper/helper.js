@@ -86,26 +86,29 @@ const getBackground = status => {
 
 const convertSchedule = (absents, teacher = false) => {
   let combined = [];
-  for (const [i, absen] of absents.entries()) {
-    const index = combined.findIndex(comb => {
-      if (teacher)
+  console.log('absents', absents);
+  if (absents)
+    for (const [i, absen] of absents.entries()) {
+      const index = combined.findIndex(comb => {
+        if (teacher)
+          return (
+            comb?.mapel.id === absen.mapel.id &&
+            comb?.class.id === absen.class.id
+          );
         return (
-          comb?.mapel.id === absen.mapel.id && comb?.class.id === absen.class.id
+          comb?.mapel.id === absen.mapel.id &&
+          comb?.teacher.id === absen.teacher.id
         );
-      return (
-        comb?.mapel.id === absen.mapel.id &&
-        comb?.teacher.id === absen.teacher.id
-      );
-    });
-    if (index > -1) {
-      combined[index]['end'] = i + 1;
-      combined[index]['total'] += 1;
-    } else {
-      absen['start'] = i + 1;
-      absen['total'] = 1;
-      combined.push(absen);
+      });
+      if (index > -1) {
+        combined[index]['end'] = i + 1;
+        combined[index]['total'] += 1;
+      } else {
+        absen['start'] = i + 1;
+        absen['total'] = 1;
+        combined.push(absen);
+      }
     }
-  }
   return combined;
 };
 

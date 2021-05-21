@@ -12,6 +12,7 @@ import Login from './src/activity/Login';
 import About from './src/activity/About';
 import Siswa from './src/Navigation/SiswaNavigation';
 import Guru from './src/Navigation/GuruNavigation';
+import {useEffect, useState} from 'react/cjs/react.development';
 
 const Tab = createBottomTabNavigator();
 
@@ -189,9 +190,10 @@ const SiswaTabs = () => {
 };
 
 const Stack = createStackNavigator();
-const Navigation = () => {
+const Navigation = ({route}) => {
+  console.log(route);
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName={route}>
       <Stack.Screen
         name="Login"
         options={{headerShown: false}}

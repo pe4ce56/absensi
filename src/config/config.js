@@ -1,4 +1,4 @@
 module.exports = {
-  API_ENDPOINT: 'http://8af9231d267a.ngrok.io/api',
+  API_ENDPOINT: 'http://139.195.80.86:8000/api',
   JAM_PELAJARAN: 40,
 };

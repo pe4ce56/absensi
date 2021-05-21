@@ -37,11 +37,11 @@ export default ({navigation}) => {
         password: '',
       });
       const token = await AsyncStorage.getItem('token');
-      const user = await AsyncStorage.getItem('user');
-      if (token) {
-        if (user.role === 'siswa') navigation.navigate('Siswa');
-        else navigation.navigate('Guru');
-      }
+      const user = JSON.parse(await AsyncStorage.getItem('user'));
+      // if (token) {
+      //   if (user.role === 'siswa') navigation.navigate('Siswa');
+      //   else if (user.role === 'guru') navigation.navigate('Guru');
+      // }
     });
     return unsubscribe;
   }, []);
@@ -64,11 +64,12 @@ export default ({navigation}) => {
               'user',
               JSON.stringify(res.data.data.user),
             );
+            setData({username: '', password: ''});
             if (res.data.data.user.role === 'siswa')
               navigation.navigate('Siswa');
             else navigation.navigate('Guru');
           } catch (err) {
-            console.log(err);
+            Alert.alert('Terjadi Kesalahan', 'Username/Password salah!');
           }
         }
 

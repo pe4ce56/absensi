@@ -29,33 +29,39 @@ const Home = ({navigation}) => {
   const [absents, setAbsents] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  useEffect(async () => {
+    await getAbsen();
+  }, [navigation]);
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', async () => {
-      setLoading(true);
-      try {
-        const token = await AsyncStorage.getItem('token');
-        instance(token)
-          .get('/siswa/absent')
-          .then(res => {
-            authCheck(res.data.code, navigation);
-
-            setLoading(false);
-            setAbsents(convertSchedule(res.data.data));
-          })
-          .catch(err => {
-            authCheck(err?.response?.status, navigation);
-            Alert.alert('Error', 'Kesalahanan saat mengambil data');
-            setLoading(false);
-          });
-      } catch (error) {
-        Alert.alert('Error', 'Kesalahanan saat mengambil data');
-        setLoading(false);
-      }
+      await getAbsen();
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, []);
+  const getAbsen = async () => {
+    setLoading(true);
+    try {
+      const token = await AsyncStorage.getItem('token');
+      instance(token)
+        .get('/siswa/absent')
+        .then(res => {
+          authCheck(res.data.code, navigation);
 
+          setLoading(false);
+          setAbsents(convertSchedule(res.data.data));
+        })
+        .catch(err => {
+          authCheck(err?.response?.status, navigation);
+          Alert.alert('Error', 'Kesalahanan saat mengambil data');
+          setLoading(false);
+        });
+    } catch (error) {
+      Alert.alert('Error', 'Kesalahanan saat mengambil data');
+      setLoading(false);
+    }
+  };
   return (
     <View style={{alignItems: 'center', flex: 1}}>
       <Header title="Absensi Hari Ini" />
