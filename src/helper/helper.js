@@ -33,9 +33,9 @@ function getTimeNow() {
   return (
     D(new Date().getHours()) +
     ':' +
-    new Date().getMinutes() +
+    D(new Date().getMinutes()) +
     ':' +
-    new Date().getSeconds()
+    D(new Date().getSeconds())
   );
 }
 
