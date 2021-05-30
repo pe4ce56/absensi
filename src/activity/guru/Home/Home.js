@@ -37,18 +37,17 @@ const Home = ({navigation}) => {
     date.getMonth() + 1
   }-${date.getDate()}-${date.getFullYear()}`;
 
-  const onChange = (event, selectedDate) => {
+  const onChange = async (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
-    setDate(currentDate);
+    if (currentDate !== date) {
+      await AsyncStorage.setItem('date', currentDate.toString());
+      setDate(currentDate);
+    }
   };
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
-      setDate(new Date());
-      await getAbsent();
-    });
-    return unsubscribe;
+  useEffect(async () => {
+    await getAbsent();
   }, []);
   useEffect(async () => {
     await getAbsent();
