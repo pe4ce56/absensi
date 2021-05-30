@@ -41,7 +41,6 @@ const Home = ({navigation}) => {
     const currentDate = selectedDate || date;
     setShowDatePicker(false);
     if (currentDate !== date) {
-      await AsyncStorage.setItem('date', currentDate.toString());
       setDate(currentDate);
     }
   };
