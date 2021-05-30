@@ -1,4 +1,4 @@
 module.exports = {
-  API_ENDPOINT: 'http://139.195.80.86:8000/api',
+  API_ENDPOINT: 'http:/10.0.2.2:8000/api',
   JAM_PELAJARAN: 40,
 };

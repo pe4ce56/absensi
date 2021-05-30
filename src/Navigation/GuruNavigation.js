@@ -10,6 +10,7 @@ import More from '../activity/guru/More';
 import Profile from '../activity/guru/Profile';
 
 import styles from '../../styles.json';
+import Absent from '../activity/guru/Home/Absent';
 
 const {tailwind, getColor} = create(styles);
 
@@ -25,6 +26,18 @@ const HomeScreen = () => {
       <HomeStack.Screen
         name="Detail Guru"
         component={Detail}
+        options={{
+          title: 'Absensi',
+          tabBarVisible: false,
+          headerStyle: {
+            backgroundColor: getColor('biru'),
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+      <HomeStack.Screen
+        name="Show Absent"
+        component={Absent}
         options={{
           title: 'Absensi',
           tabBarVisible: false,

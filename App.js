@@ -55,8 +55,9 @@ const App = () => {
       const user = JSON.parse(await AsyncStorage.getItem('user'));
 
       if (token) {
-        if (user.role === 'siswa') setRoute('Siswa');
-        else if (user.role === 'guru') setRoute('Guru');
+        if (user?.role === 'siswa') setRoute('Siswa');
+        else if (user?.role === 'guru') setRoute('Guru');
+        else setRoute('Login');
       } else {
         setRoute('Login');
       }

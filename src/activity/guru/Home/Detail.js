@@ -6,6 +6,9 @@ import {
   Alert,
   Dimensions,
   ScrollView,
+  TouchableHighlight,
+  TouchableHighlightBase,
+  TouchableOpacity,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -27,7 +30,6 @@ const {getColor, tailwind} = create(styles);
 const {height, width} = Dimensions.get('window');
 
 const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
-  console.log(route.params.data);
   // to delete bottom bar
   useFocusEffect(
     React.useCallback(() => {
@@ -209,22 +211,39 @@ const Detail = ({navigation: {dangerouslyGetParent}, navigation, route}) => {
 
             <Text style={style.daftarSiswa}>Daftar Siswa</Text>
             {students.map((student, key) => (
-              <View style={style.containerList} key={key}>
-                <View>
-                  <Text style={style.valueList}>{student.nama}</Text>
-                  <Text style={style.labelList}>
-                    {student.absent[0]?.waktu
-                      ? getHoursMinutes(student.absent[0].waktu)
-                      : '-'}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    ...style.bullet,
-                    borderColor: getBackground(checkStatus(student?.absent[0])),
-                  }}
-                />
-              </View>
+              <TouchableHighlight
+                style={style.containerList}
+                key={key}
+                underlayColor={getColor('gray-100')}
+                onPress={() => {
+                  if (student?.absent.length > 0)
+                    navigation.navigate('Show Absent', {
+                      ...student,
+                      kelas: route.params.data.class,
+                      mapel: route.params.data.mapel,
+                      total: route.params.data.total,
+                    });
+                }}
+                activeOpacity={0.9}>
+                <>
+                  <View>
+                    <Text style={style.valueList}>{student.nama}</Text>
+                    <Text style={style.labelList}>
+                      {student.absent[0]?.waktu
+                        ? getHoursMinutes(student.absent[0].waktu)
+                        : '-'}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      ...style.bullet,
+                      borderColor: getBackground(
+                        checkStatus(student?.absent[0]),
+                      ),
+                    }}
+                  />
+                </>
+              </TouchableHighlight>
             ))}
             {students.length < 1 && (
               <Text style={style.not_found}>Tidak ada yang absen</Text>
@@ -323,11 +342,12 @@ const style = StyleSheet.create({
     marginHorizontal: -16,
   },
   containerList: {
-    marginTop: 20,
+    marginHorizontal: -18,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '100%',
   },
   bullet: {
     width: 17,
